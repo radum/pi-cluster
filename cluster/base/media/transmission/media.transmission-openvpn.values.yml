@@ -1,0 +1,84 @@
+# Optimized for airvpn.
+
+replicaCount: 1
+
+image:
+  repository: haugene/transmission-openvpn
+  tag: "latest-armhf"
+  pullPolicy: IfNotPresent
+
+env:
+  - name: OPENVPN_PROVIDER
+    value: "EXPRESSVPN"
+  - name: OPENVPN_CONFIG
+    value: "my_expressvpn_romania_udp"
+  - name: OPENVPN_USERNAME
+    valueFrom: # Reference to the secret | openvpn.username
+      secretKeyRef:
+        name: "openvpn"
+        key: "username"
+  - name: OPENVPN_PASSWORD
+    valueFrom: # Reference to the secret | openvpn.password
+      secretKeyRef:
+        name: "openvpn"
+        key: "password"
+  - name: LOCAL_NETWORK
+    value: "192.168.0.0/24"
+  - name: TRANSMISSION_PEER_PORT
+    value: "47444"
+  - name: TRANSMISSION_DOWNLOAD_DIR
+    value: "/downloads/transmission"
+  - name: PUID
+    value: "1000"
+  - name: PGID
+    value: "1000"
+
+service:
+  type: ClusterIP
+  port: 80
+
+volumes:
+  - name: "media-ssd"
+    persistentVolumeClaim:
+      claimName: "media-ssd" # PersistentVolumeClaim created earlier
+  - name: dev-tun # Needed for VPN
+    hostPath:
+      path: "/dev/net/tun"
+
+volumeMounts:
+    - name: "media-ssd"
+      mountPath: "/data"
+      subPath: "configs/transmission-data"
+    - name: "media-ssd"
+      mountPath: "/downloads/transmission"
+      subPath: "downloads/transmission"
+    - name: dev-tun
+      mountPath: "/dev/net/tun"
+
+# Security context for container
+securityContext:
+  capabilities:
+    add:
+      - NET_ADMIN
+
+# Security context for pod
+# Can be used to allow ipv6 for openvpn, because
+# some VPN providers push an ipv6 route with will fail without
+# ipv6 support, see https://github.com/haugene/docker-transmission-openvpn/issues/789
+# Note that your kubelet needs to allow changing this sysctl setting, see
+# https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/#enabling-unsafe-sysctls
+#
+# - podSecurityContext:
+#     sysctls:
+#       - name: net.ipv6.conf.all.disable_ipv6
+#         value: "0"
+podSecurityContext: {}
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
