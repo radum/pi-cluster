@@ -25,8 +25,8 @@ Our cluster will be composed of 3 (at the time of writing I had 3) machines.
 | Hostname | IP | Description |
 | -------- | -- | ----------- |
 | kube-master | 192.168.0.100 | A Master represents the main node of the cluster responsible of the orchestration. It can act as a worker as well and run applications |
-| kube-worker1 | 192.168.0.101 | A Worker is a machine dedicated to run applications only. It is remotely managed by the master node |
-| kube-worker2 |192.168.0.102 | A Worker is a machine dedicated to run applications only. It is remotely managed by the master node |
+| kube-worker-1 | 192.168.0.101 | A Worker is a machine dedicated to run applications only. It is remotely managed by the master node |
+| kube-worker-2 |192.168.0.102 | A Worker is a machine dedicated to run applications only. It is remotely managed by the master node |
 
 > NOTE: 192.168.0.100 101 102 are the IP addresses I used on my cluster. Based on the network setup, these values could be different.
 
@@ -74,6 +74,16 @@ touch ssh
 
 You can use your router or https://angryip.org/ or any IP discovery app you want.
 
+Easiest to do is to run:
+
+```shell
+# This is for PI 4
+arp -na | grep -i "dc:a6:32"
+
+# This is to find older PI
+# arp -na | grep -i "b8:27:eb"
+```
+
 2. Connect via SSH to the machine
 
 > The default password after a fresh Raspbian installation is raspberry (this will be change after this step).
@@ -106,7 +116,7 @@ passwd: password updated successfully
 
 The default machine hostname is raspberrypi, keeping this could be quite confusing when we'd have two more machines with the same name. To change the hostname, two files needs to be edited:
 
-1. Edit the file `/etc/hostnam`e and replace raspberrypi by `kube-master` or `kube-worker-x`.
+1. Edit the file `/etc/hostname` and replace raspberrypi by `kube-master` or `kube-worker-x`.
 
 ```shell
 sudo nano /etc/hostname
@@ -441,8 +451,8 @@ sed -i 's/127\.0\.0\.1/192\.168\.0\.100/g' ~/.kube/config
 $ kubectl get nodes -o wide
 
 NAME           STATUS   ROLES    AGE   VERSION         INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION     CONTAINER-RUNTIME
-kube-worker1   Ready    <none>   18m   v1.17.0+k3s.1   192.168.0.23   <none>        Debian GNU/Linux 10 (buster)     5.4.6-rockchip64   containerd://1.3.0-k3s.5
-kube-worker2   Ready    <none>   17m   v1.17.0+k3s.1   192.168.0.24   <none>        Raspbian GNU/Linux 10 (buster)   4.19.75-v7+        containerd://1.3.0-k3s.5
+kube-worker-1   Ready    <none>   18m   v1.17.0+k3s.1   192.168.0.23   <none>        Debian GNU/Linux 10 (buster)     5.4.6-rockchip64   containerd://1.3.0-k3s.5
+kube-worker-2   Ready    <none>   17m   v1.17.0+k3s.1   192.168.0.24   <none>        Raspbian GNU/Linux 10 (buster)   4.19.75-v7+        containerd://1.3.0-k3s.5
 kube-master    Ready    master   44h   v1.17.0+k3s.1   192.168.0.22   <none>   
 ```
 
@@ -509,8 +519,8 @@ $ kubectl get pods -n kube-system -l app=metallb -o wide
 
 NAMESPACE     NAME                                      READY   STATUS    RESTARTS   AGE     IP             NODE           NOMINATED NODE   READINESS GATES
 kube-system   metallb-speaker-s7cvp                     1/1     Running   0          2m47s   192.168.0.22   kube-master    <none>           <none>
-kube-system   metallb-speaker-jx64v                     1/1     Running   0          2m47s   192.168.0.23   kube-worker1   <none>           <none>
-kube-system   metallb-controller-6fb88ff94b-4g256       1/1     Running   0          2m47s   10.42.1.7      kube-worker1   <none>           <none>
+kube-system   metallb-speaker-jx64v                     1/1     Running   0          2m47s   192.168.0.23   kube-worker-1   <none>           <none>
+kube-system   metallb-controller-6fb88ff94b-4g256       1/1     Running   0          2m47s   10.42.1.7      kube-worker-1   <none>           <none>
 kube-system   metallb-speaker-k5kbh                     1/1     Running   0
 ```
 
@@ -540,7 +550,7 @@ After a few seconds, you should observe the Nginx component deployed under `kube
 $ kubectl get pods -n kube-system -l app=nginx-ingress -o wide
 
 NAME                                             READY   STATUS    RESTARTS   AGE     IP          NODE           NOMINATED NODE   READINESS GATES
-nginx-ingress-controller-996c5bf9-k4j64   1/1     Running   0          76s   10.42.1.13   kube-worker1   <none>           <none>
+nginx-ingress-controller-996c5bf9-k4j64   1/1     Running   0          76s   10.42.1.13   kube-worker-1   <none>           <none>
 ```
 
 Interestingly, Nginx service is deployed in LoadBalancer mode, you can observe MetalLB allocates a virtual IP (column `EXTERNAL-IP`) to Nginx with the command here:
@@ -588,7 +598,7 @@ Check that all three cert-manager components are running.
 kubectl get pods -n kube-system -l app.kubernetes.io/instance=cert-manager -o wide 
 
 NAME                                       READY   STATUS    RESTARTS   AGE   IP           NODE           NOMINATED NODE   READINESS GATES
-cert-manager-cainjector-6659d6844d-w9vrn   1/1     Running   0          69s   10.42.1.13   kube-worker1   <none>           <none>
+cert-manager-cainjector-6659d6844d-w9vrn   1/1     Running   0          69s   10.42.1.13   kube-worker-1   <none>           <none>
 cert-manager-859957bd4c-2nzqp              1/1     Running   0          69s   10.42.0.16   kube-master    <none>           <none>
 cert-manager-webhook-547567b88f-zfm9x      1/1     Running   0          68s   10.42.0.17   kube-master    <none>           <none>
 ```

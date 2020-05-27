@@ -10,6 +10,11 @@ Various links and resources around the web on how to build a Pi Cluster.
 - Step by Step slow guide — Kubernetes Cluster on Raspberry Pi 4B https://levelup.gitconnected.com/step-by-step-slow-guide-kubernetes-cluster-on-raspberry-pi-4b-part-1-6e4179c89cbc
 - Raspberry Pi Cluster https://www.jeffgeerling.com/blog/2020/raspberry-pi-cluster-episode-1-introduction-clusters
 
+### Articles
+
+- https://www.raspberrypi.org/blog/five-years-of-raspberry-pi-clusters/
+- https://medium.com/@alexellisuk/five-years-of-raspberry-pi-clusters-77e56e547875
+
 ### Pi Cluster Resources
 
 #### Helm repos
@@ -17,18 +22,23 @@ Various links and resources around the web on how to build a Pi Cluster.
 - Billimek charts https://github.com/billimek/billimek-charts/
 - Geek Helm charts for seedbox https://github.com/bananaspliff/geek-charts
 
-#### K3s
+#### K3s Implementations
 
 - k3s cluster backed by Flux (GitOps) up and running on a cluster of RPi4 https://github.com/onedr0p/k3s-gitops-arm
 - Mediacenter for Raspberry Pi K3s cluster https://github.com/olafkfreund/mediacenter
 
-#### Docker
+##### Tools
+
+- from Zero to KUBECONFIG in < 1 min 🚀 https://github.com/alexellis/k3sup
+- Kubernetes apps, the easy way 😎 https://github.com/alexellis/arkade
+
+#### Docker Implementations
 
 - My Docker Compose for my Udoo Bolt Home Media Server https://github.com/jarrad-roam/bolt-media
 - Personal version of smarthomebeginner docker home media server https://github.com/thoroc/home-server
 - A collection of scripts and dockers for my home media server https://github.com/danshilm/Tatooine-380
 
-## PI Contaiers
+## PI Compatible Contaiers
 
 - Influx ARM https://hub.docker.com/r/arm32v7/influxdb/tags
 
