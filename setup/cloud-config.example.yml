@@ -1,0 +1,72 @@
+#cloud-config
+
+#
+# @CHANGEME - Update hostname
+#
+# kube_master / kube-worker-1 / kube-worker-2 / ...
+hostname: kube_master
+manage_etc_hosts: true
+
+#
+# @CHANGEME - Update locale and timezone
+#
+locale: "en_US.UTF-8"
+timezone: "Europe/London"
+
+apt_preserve_sources_list: true
+apt_update: true
+apt_upgrade: true
+
+packages:
+ - apt-transport-https
+ - ca-certificates
+ - software-properties-common
+ - python3
+ - python3-pip
+ - gnupg2
+
+#
+# @CHANGEME - Update user config
+#
+users:
+  - name: dacia
+    primary-group: users
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users
+    ssh_import_id: None
+    ## To enable SSH password log in
+    ## mkpasswd --method=SHA-512 --rounds=4096
+    # passwd: ""
+    # lock_passwd: false
+    # ssh_pwauth: true
+    lock_passwd: true
+    ssh_pwauth: false
+    # Replace with your public key `cat ~/.ssh/pi-cluster.pub | pbcopy`
+    # Don't forget to change the SSH config to point the hosts to this key
+    ssh_authorized_keys:
+      - "ssh-rsa ..."
+
+#
+# @CHANGEME - Update network config
+#
+write_files:
+  - path: /etc/netplan/50-cloud-init.yaml
+    permissions: '0644'
+    content: |
+      network:
+        version: 2
+        ethernets:
+          eth0:
+            addresses:
+              - 192.168.0.100/24
+            gateway4: 192.168.0.1
+            nameservers:
+              addresses:
+                - 1.1.1.1
+                - 8.8.8.8
+
+runcmd:
+  - [sudo, netplan, apply]
+  - [sudo, sed ,-i, 's/PasswordAuthentication no/PasswordAuthentication yes/g', /etc/ssh/sshd_config]
+  - [sudo, systemctl, restart, sshd]
