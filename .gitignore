@@ -9,3 +9,4 @@ ansible/vars.yml
 
 temp
 _README.md
+kubeconfig
