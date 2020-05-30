@@ -3,5 +3,9 @@
 .AppleDouble
 .LSOverride
 
+# Example files
+ansible/inventory
+ansible/vars.yml
+
 temp
 _README.md

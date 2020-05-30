@@ -25,6 +25,8 @@ Update [cloud-config.example.yml](../setup/cloud-config.example.yml) as you see 
 
 ## Flash
 
+> **Note:** To find what /dev/disk number your flash drive has you can use `diskutil list`
+
 ```bash
 flash \
     --userdata setup/cloud-config.example.yml \

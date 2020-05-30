@@ -73,3 +73,9 @@ Ideally we should build a VLAN for our IOT devices. Like this:
 [Ansible](https://www.ansible.com) is a great automation tool and here I am using it to provision the RPis.
 
 > See [ansible.md](docs/setup-ansible/ansible.md) and review the files in the [ansible](ansible) folder.
+
+### 3. Install k3s on your RPis using k3sup
+
+[k3sup](https://k3sup.dev) is a neat tool provided by [@alexellis](https://github.com/alexellis) that helps get your k3s cluster up and running quick.
+
+> For manual deployment see [k3sup.md](docs/setup-ansible/k3sup.md), and for an automated script see [bootstrap-cluster.sh](setup/bootstrap-cluster.sh)
