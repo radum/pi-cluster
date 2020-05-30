@@ -17,10 +17,10 @@
     - include_role:
         name: user
       tags: ['user']
-    - include_role:
-        name: userland
-      when: deploy_target != 'vagrant'
-      tags: ['userland']
+    # - include_role:
+    #     name: userland
+    #   when: deploy_target != 'vagrant'
+    #   tags: ['userland']
 
     - name: Rebooting hosts
       reboot:
