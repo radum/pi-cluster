@@ -193,7 +193,7 @@ Connection to 192.168.0.22 closed.
 
 Reconnect after a few seconds
 
-```
+```bash
 ssh pi@192.168.0.100
 pi@192.168.0.22's password: <new_password>
 ```
@@ -212,7 +212,7 @@ If we need to connect a SSD to the master node and share it via NFS follow [thes
 
 Bellow are details on how to set a NFS share on a Synology NAS for all machines.
 
-> THE FOLLOWING STEPS (6/5) SHOULD BE RUN ON ALL MACHINES
+> THE FOLLOWING STEPS (5/5) SHOULD BE RUN ON ALL MACHINES
 
 ##### (1/5) Create a mount folder
 
@@ -290,7 +290,7 @@ Once the cluster is up and each node connected to each other, we will install so
 
 1. Connect via ssh to the master node
 
-```
+```bash
 ssh pi@192.168.0.100
 ```
 
@@ -300,7 +300,7 @@ The first line specifies in which mode we would like to write the k3s configurat
 
 Instead we will install manually `metalb` as load balancer and `nginx` as proxy.
 
-```
+```bash
 export K3S_KUBECONFIG_MODE="644"
 export INSTALL_K3S_EXEC=" --no-deploy servicelb --no-deploy traefik"
 ```
@@ -397,7 +397,7 @@ Third line is an access token to the k3s server saved previously.
 
 3. Run the installer on each worker node
 
-```
+```bash
 curl -sfL https://get.k3s.io | sh -
 ```
 
@@ -488,7 +488,7 @@ helm repo update
 
 We can now install, uninstall and list applications using Helm using
 
-```
+```bash
 helm install <deployment_name> <chart_name> --namespace <namespace> --set <property_value_to_change>
 helm uninstall <deployment_name> --namespace <namespace>
 helm list --namespace <namespace>
@@ -500,13 +500,15 @@ helm list --namespace <namespace>
 
 To install MetalLB from Helm, you simply need to run the following command helm install ... with:
 
+* `noglob`: This is to fix ZSH to treat [0] as glob. It fixes `zsh: no matches found: configInline.address-pools[0].name=default` error.
+
 * `metallb`: the name to give to the deployment
 * `stable/metallb`: the name of the [chart](https://github.com/helm/charts/tree/master/stable/metallb)
 * `--namespace kube-system`: the namespace in which we want to deploy MetalLB.
 * `--set configInline...`: to configures MetalLB in Layer 2 mode (see [documentation](https://metallb.universe.tf/configuration/) for more details). The IPs range `192.168.0.240 - 192.168.0.250` is used to constitute a pool of virtual IP addresses.
 
 ```bash
-helm install metallb stable/metallb --namespace kube-system \
+noglob helm install metallb stable/metallb --namespace kube-system \
   --set configInline.address-pools[0].name=default \
   --set configInline.address-pools[0].protocol=layer2 \
   --set configInline.address-pools[0].addresses[0]=192.168.0.240-192.168.0.250
@@ -536,11 +538,17 @@ The only config change done here are to specify an ARM compatible image and disa
 
 > You might want to update the image tag bellow
 
+* `controller.image.tag=0.32.0`: To get the latest version follow this [link](quay.io/kubernetes-ingress-controller/nginx-ingress-controller-arm).
+* `controller.image.runAsUser=33`: www-data user has id 33. You can check the id that is correct on the master PI by running `id -u www-data`.
+
+> FAIL: If this fail will loopback error
+We might need to run as user 101 instead of 33. That is the user `systemd-network`. We can find a user base don his id by running `getent passwd "101" | cut -d: -f1`.
+
 ```bash
 helm install nginx-ingress stable/nginx-ingress --namespace kube-system \
   --set controller.image.repository=quay.io/kubernetes-ingress-controller/nginx-ingress-controller-arm \
   --set controller.image.tag=0.32.0 \
-  --set controller.image.runAsUser=33 \
+  --set controller.image.runAsUser=101 \
   --set defaultBackend.enabled=false
 ```
 
