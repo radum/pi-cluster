@@ -583,7 +583,7 @@ Install the CustomResourceDefinition resources.
 > You might want to update the release version bellow (https://github.com/jetstack/cert-manager/releases)
 
 ```bash
-kubectl apply --validate=false -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.15.1/deploy/manifests/00-crds.yaml
+kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.15.1/cert-manager.crds.yaml
 ```
 
 2. Configure the jetstack Helm repository
