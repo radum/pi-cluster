@@ -597,7 +597,7 @@ helm repo add jetstack https://charts.jetstack.io && helm repo update
 3. Install cert-manager through Helm
 
 ```bash
-helm install cert-manager jetstack/cert-manager --namespace kube-system
+helm install cert-manager jetstack/cert-manager --namespace kube-system --version v0.15.1
 ```
 
 Check that all three cert-manager components are running.
@@ -705,7 +705,7 @@ In order to expose a NFS share to our applications deployed on Kubernetes, we wi
 ```
 
 ```bash
-kubectl apply -f example.nfs.persistentvolume.yml
+kubectl apply -f cluster/base/common/example.nfs.persistentvolume.yml
 ```
 
 **2. Deploy the Persistent Volume Claim**
@@ -718,7 +718,7 @@ Now, we need to configure a Persistent Volume Claim which maps a Peristent Volum
 ```
 
 ```bash
-kubectl apply -f example.nfs.persistentvolumeclaim.yml
+kubectl apply -f cluster/base/common/example.nfs.persistentvolumeclaim.yml
 ```
 
 **3. Checkout the result**
@@ -826,4 +826,99 @@ $ sudo rm -rf /var/lib/rancher
 
 ### (3/8) Self-host your Media Center On Kubernetes with Plex, Sonarr, Radarr, Transmission and Jackett
 
-TODO
+* **Persistence:** A dedicated volume on the SSD to store the data and files
+* **Torrent Proxy:** Jackett is a Torrent Providers Aggregator tool helping to find efficiently BitTorent files over the web
+* **Downloaders:** Transmission is a BitTorrent client to download the files
+* **TV Show/Movie Media Management:** We'll use Sonarr and Radarr to automate the media aggregation. It searches, launches downloads and renames files when they go out
+* **Media Center/Player:** Plex (server/player) will allow us to make our Media resources accessible from anywhere.
+
+![Media center architecture](../../assets/media-center-architecture.webp)
+
+#### Namespace
+
+We are going to isolate all the Kubernetes objects related to the Media Center into the namespace media.
+
+To create a namespace, run the following command:
+
+```bash
+kubectl create namespace media
+```
+
+#### Persistence
+
+**1. Deploy the Persistent Volume (PV)**
+
+The Persistent Volume specifies the name, the size, the location and the access modes of the volume:
+
+* The name of the PV is `media-ssd`
+* The size allocated is 200GB
+* The location is `/mnt/ssd/media`
+* The access is ReadWriteOnce
+
+Create the following file and apply it to the k8 cluster.
+
+```
+# media.persistentvolume.yml
+# Content: [cluster/base/common/media.persistentvolume.yml]
+```
+
+```bash
+kubectl apply -f cluster/base/common/media.persistentvolume.yml
+
+# persistentvolume/media-ssd created
+```
+
+You can verify the PV exists with the following command:
+
+```bash
+kubectl get pv
+```
+
+**2. Create the Persistent Volume Claim (PVC)**
+
+The Persistent Volume Claim is used to map a Persistent Volume to a deployment or stateful set. Unlike the PV, the PVC belongs to a namespace.
+
+Create the following file and apply it to the k8 cluster.
+
+```
+# media.persistentvolumeclaim.yml
+# Content: [cluster/base/common/media.persistentvolumeclaim.yml]
+```
+
+```bash
+kubectl apply -f cluster/base/common/media.persistentvolumeclaim.yml
+
+# persistentvolumeclaim/media-ssd created
+```
+
+You can verify the PVC exists with the following command:
+
+```bash
+kubectl get pvc -n media
+```
+
+#### Ingress
+
+After the persistent volume, we are now going to deploy the ingress responsible of making accessible a service from outside the cluster by mapping an internal `service:port` to a host. To choose a host, we need to configure a DNS like we did for NextCloud "nextcloud.<domain.com>" in the previous article. However, unlike NextCloud, the Media Center components have no reason to be exposed on the Internet, we can pick a host that will be resolved internally to our Nginx proxy (available at `192.168.0.240` : LoadBalancer IP). The simplest solution is to use [nip.io](https://nip.io/) which allows us to map an IP (in our case `192.168.0.240`) to a hostname without touching `/etc/hosts` or configuring a DNS. Basically it resolves `<anything>.<ip>.nip.io` by `<ip>` without requiring anything else, Magic !
+
+**1. Create the file `media.ingress.yaml`**
+
+Create the following Ingress config file media.ingress.yaml to map the routes to each service we will deploy right after this step:
+
+* `http://media.192.168.0.240.nip.io/transmission` -> transmission-transmission-openvpn:80
+* `http://media.192.168.0.240.nip.io/sonarr` -> sonarr:80
+* `http://media.192.168.0.240.nip.io/jackett` -> jackett:80
+* `http://media.192.168.0.240.nip.io/radarr` -> radarr:80
+* `http://media.192.168.0.240.nip.io/` -> plex-kube-plex:32400
+
+**2. Deploy the ingress**
+
+```bash
+kubectl apply -f cluster/base/common/media.ingress.yaml
+
+# ingress.extensions/media-ingress created
+```
+
+**3. Confirm the Ingress is correctly deployed**
+
+Try the URL [http://media.192.168.0.240.nip.io](http://media.192.168.0.240.nip.io) from your browser and confirm it returns the error message 503 Service Temporarily Unavailable which is normal because we haven't deployed anything yet.
