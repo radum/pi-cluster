@@ -1277,3 +1277,45 @@ Obtain a Plex Claim Token by visiting [plex.tv/claim](https://plex.tv/claim). Yo
 This will be used to bind your new PMS instance to your own user account automatically.
 
 **2. Create the Helm config file media.plex.values.yml**
+
+The default configuration can be seen by running the following command `$ helm show values billimek/plex`.
+
+Create the file `media.plex.values.yml` containing the following configuration.
+
+```
+# media.plex.values.yml
+# Content: [cluster/base/media/plex/media.plex.values.yml]
+```
+
+**3. Install the chart billimek/plex**
+
+Execute the following command to install the chart `billimek/plex` with the above configuration onto the namespace `media`.
+
+```bash
+# Use them only if enabled in values file
+# kubectl apply -f cluster/base/media/plex/media.plex-config.persistentvolume.yml
+# kubectl apply -f cluster/base/media/plex/media.plex-config.persistentvolumeclaim.yml
+# kubectl apply -f cluster/base/media/plex/media.plex-transcode.persistentvolume.yml
+# kubectl apply -f cluster/base/media/plex/media.plex-transcode.persistentvolumeclaim.yml
+
+helm install plex billimek/plex \
+    --values cluster/base/media/plex/media.plex.values.yml \
+    --namespace media
+```
+
+**4. Router config (outside access only)**
+
+If you want to access remotely to your Media library, you will need to configure a port-forwarding to allow Plex to access your PMS.
+
+Add a route to port-forward incoming requests on port `32400` to `192.168.0.241:32400` (Plex virtual IP assigned by MetalLB).
+
+**5. Setup Plex**
+
+Try now to access (from your network) to Plex Web Player on [http://192.168.0.241:32400](http://192.168.0.241:32400). You should see the setup wizard.
+
+For outside access, you need to configure the external port used to map outside incoming requests to Plex. Go to Settings / Remote Access and check Manually specify the public to set the port 32400 (as configured in the router - Local).
+
+*Notes*
+
+* You can also access Plex from your local network via the ingress: http://media.192.168.0.240.nip.io/web
+* Download the Android/iOS app and connect to your Plex account, you should automatically see your Plex Media Server with our your Media.

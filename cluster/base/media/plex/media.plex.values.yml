@@ -6,12 +6,12 @@
 
 image:
   repository: linuxserver/plex
-  tag: arm32v7-latest
+  tag: arm64v8-latest
   pullPolicy: IfNotPresent
 
 #####   START  --> Official PLEX container environment variables
 # Override this with the plex claim token from plex.tv/claim
-claimToken: "claim-yCsWpEkaJP4odL2wmJDg"
+claimToken: "claim-ouUyDqgsJrjmYmTymo-j"
 
 # Set the timezone of the plex server
 timezone: "Europe/London"
@@ -142,7 +142,7 @@ plexPreferences:
 persistence:
   transcode:
     # We want to enable a transcode pvc
-    enabled: true
+    enabled: false
     # Optionally specify claimName to manually override the PVC to be used for
     # the transcode directory. If claimName is specified, storageClass and size
     # are ignored.
@@ -177,7 +177,7 @@ persistence:
     # If not specified and claimName is not specified, the default storage
     # class will be used.
     storageClass: ""
-    # subPath: some-subpath
+    # subPath: "configs/plex"
     # The requested size of the volume to be used when creating a
     # PersistentVolumeClaim.
     size: 40Gi
@@ -200,7 +200,7 @@ persistence:
     # Optionally specify a storage class to be used for the config directory.
     # If not specified and claimName is not specified, the default storage
     # class will be used.
-    # subPath: some-subpath
+    subPath: "configs/plex"
     storageClass: ""
     # The requested size of the volume to be used when creating a
     # PersistentVolumeClaim.
