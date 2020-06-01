@@ -1293,8 +1293,8 @@ Execute the following command to install the chart `billimek/plex` with the abov
 
 ```bash
 # Use them only if enabled in values file
-# kubectl apply -f cluster/base/media/plex/media.plex-config.persistentvolume.yml
-# kubectl apply -f cluster/base/media/plex/media.plex-config.persistentvolumeclaim.yml
+kubectl apply -f cluster/base/media/plex/media.plex-config.persistentvolume.yml
+kubectl apply -f cluster/base/media/plex/media.plex-config.persistentvolumeclaim.yml
 # kubectl apply -f cluster/base/media/plex/media.plex-transcode.persistentvolume.yml
 # kubectl apply -f cluster/base/media/plex/media.plex-transcode.persistentvolumeclaim.yml
 
