@@ -909,6 +909,7 @@ Create the following Ingress config file media.ingress.yaml to map the routes to
 * `http://media.192.168.0.240.nip.io/sonarr` -> sonarr:80
 * `http://media.192.168.0.240.nip.io/jackett` -> jackett:80
 * `http://media.192.168.0.240.nip.io/radarr` -> radarr:80
+* `http://media.192.168.0.240.nip.io/tautulli` -> tautulli:80
 * `http://media.192.168.0.240.nip.io/` -> plex-kube-plex:32400
 
 **2. Deploy the ingress**
@@ -940,14 +941,16 @@ The image [haugene/transmission-openvpn](https://haugene.github.io/docker-transm
 
 ```
 .
-├── downloads // TODO:Not needed I think
 ├── media
 ├───── configs
 ├──────── jackett
+├──────── plex
+├──────── radarr
 ├──────── sonarr
 ├──────── transmission-data
 ├───── downloads
 ├──────── jackett
+├──────── movies
 ├──────── transmission
 └──────── tv
 ```
@@ -1319,3 +1322,54 @@ For outside access, you need to configure the external port used to map outside 
 
 * You can also access Plex from your local network via the ingress: http://media.192.168.0.240.nip.io/web
 * Download the Android/iOS app and connect to your Plex account, you should automatically see your Plex Media Server with our your Media.
+
+#### Heimdall Application Dashboard TODO
+
+[Heimdall](https://heimdall.site/) is a application dashboard.
+
+```
+# media.heimdall.values.yml
+# Content: [cluster/base/media/heimdall/media.heimdall.values.yml]
+```
+
+**1. Install the chart billimek/heimdall**
+
+Execute the following command to install the chart `billimek/heimdall` with the above configuration onto the namespace `media`.
+
+```bash
+helm install heimdall billimek/heimdall \
+    --values cluster/base/media/heimdall/media.heimdall.values.yml \
+    --namespace media
+```
+
+#### Tautulli Monitor your Plex Media Server
+
+[Tautulli](https://tautulli.com/) is the best web application to monitor, view analytics, and receive notifications about your Plex Media Server.
+
+**1. Create the Tautulli config file**
+
+Create a `config.ini` file inside `configs/tautulli` NFS folder with the following:
+
+```
+[General]
+http_root = "/tautulli"
+```
+
+**2. Create the Helm config file media.tautulli.values.yml**
+
+```
+# media.tautulli.values.yml
+# Content: [cluster/base/media/tautulli/media.tautulli.values.yml]
+```
+
+**3. Install the chart billimek/tautulli**
+
+```bash
+helm install tautulli billimek/tautulli \
+    --values cluster/base/media/tautulli/media.tautulli.values.yml \
+    --namespace media
+```
+
+**4. Access the UI and configure**
+
+Access http://media.192.168.0.240.nip.io/tautulli/ and configure (user will be admin).
