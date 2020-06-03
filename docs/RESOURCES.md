@@ -27,6 +27,10 @@ Various links and resources around the web on how to build a Pi Cluster.
 - k3s cluster backed by Flux (GitOps) up and running on a cluster of RPi4 https://github.com/onedr0p/k3s-gitops-arm
 - Mediacenter for Raspberry Pi K3s cluster https://github.com/olafkfreund/mediacenter
 
+#### PI Bootstrap examples
+
+- Ansible playbook to provision a cluster of Raspberry Pi's with k3s https://github.com/olafkfreund/ansible-k3s-rpi
+
 ##### Tools
 
 - from Zero to KUBECONFIG in < 1 min 🚀 https://github.com/alexellis/k3sup
@@ -37,27 +41,31 @@ Various links and resources around the web on how to build a Pi Cluster.
 - My Docker Compose for my Udoo Bolt Home Media Server https://github.com/jarrad-roam/bolt-media
 - Personal version of smarthomebeginner docker home media server https://github.com/thoroc/home-server
 - A collection of scripts and dockers for my home media server https://github.com/danshilm/Tatooine-380
+- Docker compose home media automation server https://github.com/sdoDevelop/homemedia
+- Docker-compose for home media server setup https://github.com/Snuffsis/mediaserver-compose
 
-## PI Compatible Contaiers
+## PI Compatible Resources
+
+### PI Compatible Contaiers
 
 - Influx ARM https://hub.docker.com/r/arm32v7/influxdb/tags
 
-## Compatible OS
+### PI Compatible Compatible OS
 
 - Rasbian https://www.raspberrypi.org/downloads/raspbian/
 - Ubuntu https://ubuntu.com/download/raspberry-pi
 
-## Monitoring
+## Monitoring Resources
 
 ### Monitoring Tools
 
--
+- Cluster monitoring stack for clusters based on Prometheus Operator https://github.com/carlosedp/cluster-monitoring
 
 ### Grafana dashboards
 
 - Raspberry Pi Monitoring https://grafana.com/grafana/dashboards/10578
 - AlexNAS Dashboard https://grafana.com/grafana/dashboards/12090 (demo https://camo.githubusercontent.com/eb9dd6e0b4a7cd73f5c5710bd59813c9ecaedb00/68747470733a2f2f692e726564642e69742f6e6d7070686938616c657434312e706e67)
 
-## Community
+## Community Resources
 
 - https://www.reddit.com/r/picluster/new/
