@@ -1323,25 +1323,6 @@ For outside access, you need to configure the external port used to map outside 
 * You can also access Plex from your local network via the ingress: http://media.192.168.0.240.nip.io/web
 * Download the Android/iOS app and connect to your Plex account, you should automatically see your Plex Media Server with our your Media.
 
-#### Heimdall Application Dashboard TODO
-
-[Heimdall](https://heimdall.site/) is a application dashboard.
-
-```
-# media.heimdall.values.yml
-# Content: [cluster/base/media/heimdall/media.heimdall.values.yml]
-```
-
-**1. Install the chart billimek/heimdall**
-
-Execute the following command to install the chart `billimek/heimdall` with the above configuration onto the namespace `media`.
-
-```bash
-helm install heimdall billimek/heimdall \
-    --values cluster/base/media/heimdall/media.heimdall.values.yml \
-    --namespace media
-```
-
 #### Tautulli Monitor your Plex Media Server
 
 [Tautulli](https://tautulli.com/) is the best web application to monitor, view analytics, and receive notifications about your Plex Media Server.
@@ -1373,3 +1354,39 @@ helm install tautulli billimek/tautulli \
 **4. Access the UI and configure**
 
 Access http://media.192.168.0.240.nip.io/tautulli/ and configure (user will be admin).
+
+#### Heimdall Application Dashboard
+
+[Heimdall](https://heimdall.site/) is a application dashboard.
+
+**TODO: Using a PVC for config fails for some reason**
+
+**1. Create the Helm config file media.heimdall.values.yml**
+
+For now until the todo above is fixed, we are using:
+
+```yml
+type: LoadBalancer
+  port: 80
+```
+
+This will give us an IP that we can use for our Dashboard.
+
+```
+# media.heimdall.values.yml
+# Content: [cluster/base/media/heimdall/media.heimdall.values.yml]
+```
+
+**1. Install the chart billimek/heimdall**
+
+Execute the following command to install the chart `billimek/heimdall` with the above configuration onto the namespace `media`.
+
+```bash
+helm install heimdall billimek/heimdall \
+    --values cluster/base/media/heimdall/media.heimdall.values.yml \
+    --namespace media
+```
+
+**2. Access the UI and configure**
+
+Access http://media.192.168.0.242.nip.io/ and configure (user will be admin).
