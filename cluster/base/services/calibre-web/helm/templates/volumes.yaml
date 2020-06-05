@@ -1,0 +1,44 @@
+{{- if not .Values.persistence.config.claimName }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "calibre-web.fullname" . }}-config
+  labels:
+    app: {{ template "calibre-web.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: config
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.persistence.config.size | quote }}
+{{- if .Values.persistence.config.storageClass }}
+  storageClassName: {{ .Values.persistence.config.storageClass | quote }}
+{{- end }}
+---
+{{- end }}
+{{- if not .Values.persistence.data.claimName }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "calibre-web.fullname" . }}-data
+  labels:
+    app: {{ template "calibre-web.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: data
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.persistence.data.size | quote }}
+{{- if .Values.persistence.data.storageClass }}
+  storageClassName: {{ .Values.persistence.data.storageClass | quote }}
+{{- end }}
+---
+{{- end }}

@@ -1,0 +1,85 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: "lazylibrarian-config-pvc"
+  labels:
+    type: "local"
+spec:
+  storageClassName: "manual"
+  capacity:
+    storage: "10Gi"
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/ssd/services/lazylibrarian/config"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: "services"
+  name: "lazylibrarian-config-pvc"
+spec:
+  storageClassName: "manual"
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: "10Gi"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: "lazylibrarian-books-pvc"
+  labels:
+    type: "local"
+spec:
+  storageClassName: "manual"
+  capacity:
+    storage: "10Gi"
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/ssd/services/lazylibrarian/books"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: "services"
+  name: "lazylibrarian-books-pvc"
+spec:
+  storageClassName: "manual"
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: "10Gi"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: "lazylibrarian-downloads-pvc"
+  labels:
+    type: "local"
+spec:
+  storageClassName: "manual"
+  capacity:
+    storage: "10Gi"
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/ssd/services/lazylibrarian/downloads"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: "services"
+  name: "lazylibrarian-downloads-pvc"
+spec:
+  storageClassName: "manual"
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: "10Gi"
+---

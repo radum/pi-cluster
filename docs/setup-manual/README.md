@@ -14,7 +14,7 @@ The follwing guide assumes everything will be done manually. Hopefully in the fu
 
 ## Setup Steps
 
-### (1/4) Pi setup
+### (1/7) Pi setup
 
 #### Install OS and prepare the system for Kubernetes
 
@@ -276,7 +276,7 @@ PARTUUID=738a4d67-02  /               ext4    defaults,noatime  0       1
 sudo reboot
 ```
 
-### (2/4) Install and configure a Kubernetes cluster with k3s
+### (2/7) Install and configure a Kubernetes cluster with k3s
 
 Once the cluster is up and each node connected to each other, we will install some useful services such as:
 
@@ -824,7 +824,7 @@ $ sudo /usr/local/bin/k3s-uninstall.sh
 $ sudo rm -rf /var/lib/rancher
 ```
 
-### (3/4) Self-host your Media Center On Kubernetes with Plex, Sonarr, Radarr, Transmission and Jackett
+### (3/7) Self-host your Media Center On Kubernetes with Plex, Sonarr, Radarr, Transmission and Jackett
 
 * **Persistence:** A dedicated volume on the SSD to store the data and files
 * **Torrent Proxy:** Jackett is a Torrent Providers Aggregator tool helping to find efficiently BitTorent files over the web
@@ -1355,43 +1355,7 @@ helm install tautulli billimek/tautulli \
 
 Access http://media.192.168.0.240.nip.io/tautulli/ and configure (user will be admin).
 
-#### Heimdall Application Dashboard
-
-[Heimdall](https://heimdall.site/) is a application dashboard.
-
-**TODO: Using a PVC for config fails for some reason**
-
-**1. Create the Helm config file media.heimdall.values.yml**
-
-For now until the todo above is fixed, we are using:
-
-```yml
-type: LoadBalancer
-  port: 80
-```
-
-This will give us an IP that we can use for our Dashboard.
-
-```
-# media.heimdall.values.yml
-# Content: [cluster/base/media/heimdall/media.heimdall.values.yml]
-```
-
-**1. Install the chart billimek/heimdall**
-
-Execute the following command to install the chart `billimek/heimdall` with the above configuration onto the namespace `media`.
-
-```bash
-helm install heimdall billimek/heimdall \
-    --values cluster/base/media/heimdall/media.heimdall.values.yml \
-    --namespace media
-```
-
-**2. Access the UI and configure**
-
-Access http://media.192.168.0.242.nip.io/ and configure (user will be admin).
-
-### (4/4) Deploy Prometheus and Grafana to monitor a Kubernetes cluster
+### (4/7) Deploy Prometheus and Grafana to monitor a Kubernetes cluster
 
 [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/) is a common combination of tools to build up a monitoring system where Prometheus acts as a data collector pulling periodically metrics from different systems and Grafana as a dashboard solution to visualise the data.
 
@@ -1497,3 +1461,104 @@ After configuring and deploying our Kubernetes Monitoring stack, you can now acc
 Click on the Grafana link and login with the default login/password `admin/admin` (you will be asked to choose a new password).
 
 You can now finally enjoy a lot of pre-configured dashboards for your Kubernetes cluster.
+
+### (5/7) Heimdall Application Dashboard **(WIP)**
+
+[Heimdall](https://heimdall.site/) is a application dashboard.
+
+**TODO: Using a PVC for config fails for some reason**
+
+**1. Create the Helm config file media.heimdall.values.yml**
+
+For now until the todo above is fixed, we are using:
+
+```yml
+type: LoadBalancer
+  port: 80
+```
+
+This will give us an IP that we can use for our Dashboard.
+
+```
+# services.heimdall.values.yml
+# Content: [cluster/base/services/heimdall/services.heimdall.values.yml]
+```
+
+**1. Install the chart billimek/heimdall**
+
+Execute the following command to install the chart `billimek/heimdall` with the above configuration onto the namespace `services`.
+
+```bash
+# If not already done
+kubectl create namespace services
+
+helm install heimdall billimek/heimdall \
+    --values cluster/base/services/heimdall/services.heimdall.values.yml \
+    --namespace services
+```
+
+**2. Access the UI and configure**
+
+Access http://media.192.168.0.242.nip.io/ and configure (user will be admin).
+
+
+
+### (6/7) Calibre WEB **(WIP)**
+
+```bash
+kubectl create namespace services
+kubectl apply -f cluster/base/services/calibre-web/calibre.persistentvolume.yml
+kubectl apply -f cluster/base/services/calibre-web/calibre.persistentvolumeclaim.yml
+helm install calibreweb cluster/base/services/calibre-web/helm --values cluster/base/services/calibre-web/helm/values.yaml --namespace services
+```
+
+### (7/7) Lazylibrarian
+
+[LazyLibrarian](LazyLibrarian) LazyLibrarian is a program to follow authors and grab metadata for all your digital reading needs.
+
+Using the helm chart from here: https://github.com/aldoborrero/k8s-usenet/tree/master/lazylibrarian
+
+**1. Create NFS folder structure**
+
+```
+/mnt/ssd/services/lazylibrarian/config
+/mnt/ssd/services/lazylibrarian/books
+/mnt/ssd/services/lazylibrarian/downloads
+```
+
+**2. Add a config.ini in the config folder**
+
+> NOTE: Not needed as it can be set from the Config tab.
+
+Thie solves the LibGen premission denied issues.
+
+```
+[General]
+user_agent = Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36
+download_dir = /downloads
+ebook_dir = /books
+```
+
+**3. Run the helm chart**
+
+```bash
+kubectl apply -f cluster/base/services/lazylibrarian/lazylibrarian.pvc.yml
+
+# helm install lazylibrarian k8s-usenet/lazylibrarian --values cluster/base/services/lazylibrarian/services.lazylibrarian.values.yml --namespace services
+
+helm install lazylibrarian cluster/base/services/lazylibrarian/helm --values cluster/base/services/lazylibrarian/services.lazylibrarian.values.yml --namespace services
+```
+
+**4. Configure providers and downloaders**
+
+Providers:
+
+* http://gen.lib.rus.ec
+
+Downloaders:
+
+* transmission-transmission-openvpn.media:80 (/media/downloads/transmission TODO: Add a new share path to put them in librarian PVC)
+
+**5. Access Lazylibrarian Dashboard**
+
+http://lazylibrarian.192.168.0.240.nip.io/home
