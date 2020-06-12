@@ -1462,7 +1462,7 @@ Click on the Grafana link and login with the default login/password `admin/admin
 
 You can now finally enjoy a lot of pre-configured dashboards for your Kubernetes cluster.
 
-### (5/7) Heimdall Application Dashboard **(WIP)**
+### (5/7) Heimdall Application Dashboard
 
 [Heimdall](https://heimdall.site/) is a application dashboard.
 
@@ -1470,21 +1470,12 @@ You can now finally enjoy a lot of pre-configured dashboards for your Kubernetes
 
 **1. Create the Helm config file media.heimdall.values.yml**
 
-For now until the todo above is fixed, we are using:
-
-```yml
-type: LoadBalancer
-  port: 80
-```
-
-This will give us an IP that we can use for our Dashboard.
-
 ```
 # services.heimdall.values.yml
 # Content: [cluster/base/services/heimdall/services.heimdall.values.yml]
 ```
 
-**1. Install the chart billimek/heimdall**
+**2. Install the chart billimek/heimdall**
 
 Execute the following command to install the chart `billimek/heimdall` with the above configuration onto the namespace `services`.
 
@@ -1496,6 +1487,10 @@ helm install heimdall billimek/heimdall \
     --values cluster/base/services/heimdall/services.heimdall.values.yml \
     --namespace services
 ```
+
+**3. Open heimdall**
+
+http://heimdall.192.168.0.240.nip.io/
 
 **2. Access the UI and configure**
 

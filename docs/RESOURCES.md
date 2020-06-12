@@ -14,6 +14,7 @@ Various links and resources around the web on how to build a Pi Cluster.
 
 - https://www.raspberrypi.org/blog/five-years-of-raspberry-pi-clusters/
 - https://medium.com/@alexellisuk/five-years-of-raspberry-pi-clusters-77e56e547875
+- https://mtlynch.io/digitizing-home-videos-walkthrough/
 
 ### Pi Cluster Resources
 
@@ -69,3 +70,17 @@ Various links and resources around the web on how to build a Pi Cluster.
 ## Community Resources
 
 - https://www.reddit.com/r/picluster/new/
+
+## Useful commands
+
+**1. Helm upgrade**
+
+```bash
+helm upgrade { same props as for install }
+```
+
+**2. Helm uninstall**
+
+```bash
+helm uninstall {name} -n {namespace}
+```
