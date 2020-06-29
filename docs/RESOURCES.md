@@ -16,7 +16,7 @@ Various links and resources around the web on how to build a Pi Cluster.
 - https://medium.com/@alexellisuk/five-years-of-raspberry-pi-clusters-77e56e547875
 - https://mtlynch.io/digitizing-home-videos-walkthrough/
 
-### Pi Cluster Resources
+### Cluster Resources
 
 #### Helm repos
 
@@ -28,12 +28,6 @@ Various links and resources around the web on how to build a Pi Cluster.
 - k3s cluster backed by Flux (GitOps) up and running on a cluster of RPi4 https://github.com/onedr0p/k3s-gitops-arm
 - Mediacenter for Raspberry Pi K3s cluster https://github.com/olafkfreund/mediacenter
 
-#### PI Bootstrap examples
-
-- Ansible playbook to provision a cluster of Raspberry Pi's with k3s https://github.com/olafkfreund/ansible-k3s-rpi
-
-##### Tools
-
 - from Zero to KUBECONFIG in < 1 min 🚀 https://github.com/alexellis/k3sup
 - Kubernetes apps, the easy way 😎 https://github.com/alexellis/arkade
 
@@ -44,6 +38,21 @@ Various links and resources around the web on how to build a Pi Cluster.
 - A collection of scripts and dockers for my home media server https://github.com/danshilm/Tatooine-380
 - Docker compose home media automation server https://github.com/sdoDevelop/homemedia
 - Docker-compose for home media server setup https://github.com/Snuffsis/mediaserver-compose
+- My Home Media Server in docker compose https://github.com/Noctris/mediaserver-docker
+- Raspberry Pi Media Server using Hypriot OS https://github.com/austinmcconnell/raspberry-media-server
+- This is a collection of docker-compose files used to build a media server https://github.com/Maskime/media-server
+
+#### Other Implementations (Ansible)
+
+- Ansible playbook for my Home Media Server https://github.com/guillaumebriday/homelab-docker-ansible
+
+- https://github.com/billimek/homelab-infrastructure
+- https://github.com/PixelJonas/homecluster
+- https://github.com/PixelJonas/homeserver
+
+#### PI Bootstrap examples
+
+- Ansible playbook to provision a cluster of Raspberry Pi's with k3s https://github.com/olafkfreund/ansible-k3s-rpi
 
 ## PI Compatible Resources
 
