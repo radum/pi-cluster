@@ -4,7 +4,7 @@
 
 image:
   repository: linuxserver/sonarr
-  tag: arm64v8-3.0.3.842-ls12
+  tag: arm64v8-3.0.3.896-ls29
   pullPolicy: IfNotPresent
 
 # upgrade strategy type (e.g. Recreate or RollingUpdate)

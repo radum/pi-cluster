@@ -6,7 +6,7 @@
 
 image:
   repository: linuxserver/plex
-  tag: arm64v8-latest
+  tag: arm64v8-1.19.4.2935-79e214ead-ls105
   pullPolicy: IfNotPresent
 
 #####   START  --> Official PLEX container environment variables

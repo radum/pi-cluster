@@ -4,8 +4,9 @@
 
 image:
   repository: linuxserver/jackett
-  tag: arm64v8-latest
+  tag: arm64v8-v0.16.771-ls6
   pullPolicy: IfNotPresent
+  # pullPolicy: Always
 
 # upgrade strategy type (e.g. Recreate or RollingUpdate)
 strategyType: Recreate

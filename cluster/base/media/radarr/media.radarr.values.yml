@@ -4,7 +4,7 @@
 
 image:
   repository: linuxserver/radarr
-  tag: arm64v8-3.0.0.3014-ls8
+  tag: arm64v8-3.0.0.3088-ls12
   pullPolicy: IfNotPresent
 
 # upgrade strategy type (e.g. Recreate or RollingUpdate)
