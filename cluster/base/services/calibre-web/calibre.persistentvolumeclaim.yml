@@ -12,3 +12,16 @@ spec:
     requests:
       storage: "200Gi"
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: "services"
+  name: "calibre-config-pvc"
+spec:
+  storageClassName: "manual"
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: "200Gi"
+---

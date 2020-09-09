@@ -1281,7 +1281,7 @@ This will be used to bind your new PMS instance to your own user account automat
 
 **2. Create the Helm config file media.plex.values.yml**
 
-The default configuration can be seen by running the following command `$ helm show values billimek/plex`.
+The default configuration can be seen by running the following command `$ helm show values k8s-at-home/plex`.
 
 Create the file `media.plex.values.yml` containing the following configuration.
 
@@ -1290,9 +1290,9 @@ Create the file `media.plex.values.yml` containing the following configuration.
 # Content: [cluster/base/media/plex/media.plex.values.yml]
 ```
 
-**3. Install the chart billimek/plex**
+**3. Install the chart k8s-at-home/plex**
 
-Execute the following command to install the chart `billimek/plex` with the above configuration onto the namespace `media`.
+Execute the following command to install the chart `k8s-at-home/plex` with the above configuration onto the namespace `media`.
 
 ```bash
 # Use them only if enabled in values file
@@ -1301,7 +1301,7 @@ kubectl apply -f cluster/base/media/plex/media.plex-config.persistentvolumeclaim
 # kubectl apply -f cluster/base/media/plex/media.plex-transcode.persistentvolume.yml
 # kubectl apply -f cluster/base/media/plex/media.plex-transcode.persistentvolumeclaim.yml
 
-helm install plex billimek/plex \
+helm install plex k8s-at-home/plex \
     --values cluster/base/media/plex/media.plex.values.yml \
     --namespace media
 ```
@@ -1462,7 +1462,7 @@ Click on the Grafana link and login with the default login/password `admin/admin
 
 You can now finally enjoy a lot of pre-configured dashboards for your Kubernetes cluster.
 
-### (5/7) Heimdall Application Dashboard
+### (5/7) Heimdall Application Dashboard (TODO: CONFIG PVC BUG)
 
 [Heimdall](https://heimdall.site/) is a application dashboard.
 
@@ -1496,18 +1496,20 @@ http://heimdall.192.168.0.240.nip.io/
 
 Access http://media.192.168.0.242.nip.io/ and configure (user will be admin).
 
+### (6/7) Calibre WEB **(TODO: WIP)**
 
-
-### (6/7) Calibre WEB **(WIP)**
+https://github.com/ericbisme/cailbre-web
+https://github.com/janeczku/calibre-web
 
 ```bash
 kubectl create namespace services
 kubectl apply -f cluster/base/services/calibre-web/calibre.persistentvolume.yml
 kubectl apply -f cluster/base/services/calibre-web/calibre.persistentvolumeclaim.yml
 helm install calibreweb cluster/base/services/calibre-web/helm --values cluster/base/services/calibre-web/helm/values.yaml --namespace services
+helm uninstall calibreweb -n services
 ```
 
-### (7/7) Lazylibrarian
+### (7/7) Lazylibrarian **(TODO: Transmission doesn't work OK)**
 
 [LazyLibrarian](LazyLibrarian) LazyLibrarian is a program to follow authors and grab metadata for all your digital reading needs.
 

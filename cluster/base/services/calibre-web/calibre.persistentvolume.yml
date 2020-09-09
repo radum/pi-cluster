@@ -14,3 +14,18 @@ spec:
   hostPath:
     path: "/mnt/ssd/services/calibre/data"
 ---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: "calibre-config-pvc"
+  labels:
+    type: "local"
+spec:
+  storageClassName: "manual"
+  capacity:
+    storage: "200Gi"
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/ssd/services/calibre/config"
+---

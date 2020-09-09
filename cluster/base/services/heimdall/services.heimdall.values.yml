@@ -4,7 +4,7 @@
 
 image:
   repository: linuxserver/heimdall
-  tag: arm64v8-2.2.2-ls93
+  tag: arm64v8-2.2.2-ls98
   pullPolicy: IfNotPresent
 
 # upgrade strategy type (e.g. Recreate or RollingUpdate)

@@ -4,7 +4,7 @@
 
 image:
   repository: linuxserver/tautulli
-  tag: arm64v8-07d7170e-ls9
+  tag: arm64v8-f24f4a42-ls14
   pullPolicy: IfNotPresent
 
 # upgrade strategy type (e.g. Recreate or RollingUpdate)

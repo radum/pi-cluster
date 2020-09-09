@@ -7,8 +7,6 @@
 image:
   repository: linuxserver/plex
   tag: arm64v8-1.20.1.3252-a78fef9a9-ls115
-  # repository: plexinc/pms-docker
-  # tag: 1.20.1.3252-a78fef9a9
   pullPolicy: IfNotPresent
 
 #####   START  --> Official PLEX container environment variables
@@ -69,7 +67,7 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-serviceTCP:
+service:
   type: LoadBalancer # We will use a LoadBalancer to obtain a virtual IP that can be exposed to Plex Media via our router
   port: 32400
   ## Specify the nodePort value for the LoadBalancer and NodePort service types.
@@ -81,24 +79,6 @@ serviceTCP:
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
   ##
   annotations: {}
-  # metallb.universe.tf/allow-shared-ip: plex-svc
-  labels: {}
-  ## Use loadBalancerIP to request a specific static IP,
-  ## otherwise leave blank
-  ##
-  loadBalancerIP:
-  # loadBalancerSourceRanges: []
-  ## Set the externalTrafficPolicy in the Service to either Cluster or Local
-  # externalTrafficPolicy: Cluster
-
-serviceUDP:
-  type: LoadBalancer
-  ## Provide any additional annotations which may be required. This can be used to
-  ## set the LoadBalancer service type to internal only.
-  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
-  ##
-  annotations: {}
-  # metallb.universe.tf/allow-shared-ip: plex-svc
   labels: {}
   ## Use loadBalancerIP to request a specific static IP,
   ## otherwise leave blank
@@ -159,8 +139,6 @@ plexPreferences:
     mountPath: /etc/cont-init.d/41-plex-preferences
     subPath: 41-plex-preferences
 
-hostNetwork: false
-
 persistence:
   transcode:
     # We want to enable a transcode pvc
@@ -190,8 +168,6 @@ persistence:
 
 
   data:
-    # We want to enable a data pvc
-    enabled: true
     # Optionally specify claimName to manually override the PVC to be used for
     # the data directory. If claimName is specified, storageClass and size are
     # ignored.
@@ -214,15 +190,6 @@ persistence:
     # with the additional field 'name'
     # - claimName: "special-tv"
     #   name: 'foo'
-
-  extraMounts: []
-    ## Include additional claims that can be mounted inside the
-    ## pod. This is useful if you wish to use different paths with categories
-    ## Claim will me mounted as /{mountPath} if specified. If no {mountPath} is given,
-    ## mountPath will default to {name}
-    # - name: video
-    #   claimName: video-claim
-    #   mountPath: /mnt/path/in/pod
 
   config:
     # Optionally specify claimName to manually override the PVC to be used for
@@ -251,10 +218,6 @@ certificate:
   # the location specified in pfxInContainerPath.
   pkcsMangler:
     enabled: false
-    # The Image to use for pkcsMangler
-    image:
-      repository: tlsprint/openssl
-      tag: 1.1.1f
     configmap:
       labels: {}
       annotations: {}
@@ -296,29 +259,16 @@ certificate:
         name: plex-certs
         mountPath: /etc/plex-certs
 
-# Logging configuration
-logging:
-  promtail:
-    enabled: false
-    image:
-      repository: grafana/promtail
-      tag: 1.6.0
-      pullPolicy: IfNotPresent
-    loki:
-      url: http://loki.logs.svc.cluster.local:3100/loki/api/v1/push
-
 # Probes configuration
 probes:
   liveness:
+    initialDelaySeconds: 15
     failureThreshold: 5
-    periodSeconds: 10
+    timeoutSeconds: 5
   readiness:
+    initialDelaySeconds: 15
     failureThreshold: 5
-    periodSeconds: 10
-  startup:
-    initialDelaySeconds: 5
-    failureThreshold: 30
-    periodSeconds: 10
+    timeoutSeconds: 5
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

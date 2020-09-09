@@ -4,7 +4,7 @@
 
 image:
   repository: linuxserver/jackett
-  tag: arm64v8-v0.16.771-ls6
+  tag: arm64v8-v0.16.1049-ls14
   pullPolicy: IfNotPresent
   # pullPolicy: Always
 

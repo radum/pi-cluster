@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: linuxserver/lazylibrarian
-  tag: arm64v8-a9b59930-ls14
+  tag: arm64v8-145f4da1-ls25
   pullPolicy: Always
 
 strategyType: Recreate

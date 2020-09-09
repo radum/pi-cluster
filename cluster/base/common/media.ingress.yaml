@@ -26,7 +26,7 @@ spec:
             servicePort: 80
           path: "/radarr"
         - backend:
-            serviceName: "plex"
+            serviceName: "plex-tcp"
             servicePort: 32400
           path: "/"
         - backend:
