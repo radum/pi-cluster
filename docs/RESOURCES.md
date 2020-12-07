@@ -20,8 +20,9 @@ Various links and resources around the web on how to build a Pi Cluster.
 
 #### Helm repos
 
-- Billimek charts https://github.com/billimek/billimek-charts/
+- Billimek charts https://github.com/billimek/billimek-charts/ [DEPRECATED]
 - Geek Helm charts for seedbox https://github.com/bananaspliff/geek-charts
+- k8s@Home collection of helm charts https://github.com/k8s-at-home/charts
 
 #### K3s Implementations
 
@@ -42,17 +43,24 @@ Various links and resources around the web on how to build a Pi Cluster.
 - Raspberry Pi Media Server using Hypriot OS https://github.com/austinmcconnell/raspberry-media-server
 - This is a collection of docker-compose files used to build a media server https://github.com/Maskime/media-server
 
-#### Other Implementations (Ansible)
+#### Other Implementations
 
 - Ansible playbook for my Home Media Server https://github.com/guillaumebriday/homelab-docker-ansible
 
+- https://github.com/onedr0p/home-cluster
+- https://github.com/onedr0p/home-operations
+
 - https://github.com/billimek/homelab-infrastructure
+- https://github.com/billimek/k8s-gitops
 - https://github.com/PixelJonas/homecluster
 - https://github.com/PixelJonas/homeserver
+
+- https://github.com/bjw-s/k8s-gitops
 
 #### PI Bootstrap examples
 
 - Ansible playbook to provision a cluster of Raspberry Pi's with k3s https://github.com/olafkfreund/ansible-k3s-rpi
+- Raspbernetes - Kubernetes Cluster https://github.com/raspbernetes/k8s-gitops
 
 ## PI Compatible Resources
 

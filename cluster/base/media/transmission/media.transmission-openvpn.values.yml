@@ -13,7 +13,7 @@ env:
   # TODO: Find a better way to upgrade.
   # Because there are no versioned tags we could use this to force the upgrade.
   - name: VERSION_BUMP
-    value: "1"
+    value: "2"
   - name: OPENVPN_PROVIDER
     value: "EXPRESSVPN"
   - name: OPENVPN_CONFIG
@@ -44,18 +44,18 @@ service:
   port: 80
 
 volumes:
-  - name: "media-ssd"
+  - name: "media-ssd-claim"
     persistentVolumeClaim:
-      claimName: "media-ssd" # PersistentVolumeClaim created earlier
+      claimName: "media-ssd-claim" # PersistentVolumeClaim created earlier
   - name: dev-tun # Needed for VPN
     hostPath:
       path: "/dev/net/tun"
 
 volumeMounts:
-    - name: "media-ssd"
+    - name: "media-ssd-claim"
       mountPath: "/data"
       subPath: "configs/transmission-data" # Path /mnt/ssd/media/configs/transmission-data where transmission writes the configuration
-    - name: "media-ssd"
+    - name: "media-ssd-claim"
       mountPath: "/media/downloads/transmission"
       subPath: "downloads/transmission" # Path /mnt/ssd/media/downloads/transmission where transmission downloads Torrents
     - name: dev-tun

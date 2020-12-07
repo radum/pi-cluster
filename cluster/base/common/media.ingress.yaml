@@ -15,15 +15,15 @@ spec:
           path: "/transmission"
         - backend:
             serviceName: "sonarr"
-            servicePort: 80
+            servicePort: 8989
           path: "/sonarr"
         - backend:
             serviceName: "jackett"
-            servicePort: 80
+            servicePort: 9117
           path: "/jackett"
         - backend:
             serviceName: "radarr"
-            servicePort: 80
+            servicePort: 7878
           path: "/radarr"
         - backend:
             serviceName: "plex-tcp"
@@ -31,6 +31,6 @@ spec:
           path: "/"
         - backend:
             serviceName: "tautulli"
-            servicePort: 80
+            servicePort: 8181
           path: "/tautulli"
 ---

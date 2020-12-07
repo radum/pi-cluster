@@ -6,7 +6,7 @@
 
 image:
   repository: linuxserver/plex
-  tag: arm64v8-1.20.4.3517-ab5e1197c-ls123
+  tag: arm64v8-1.20.1.3252-a78fef9a9-ls115
   # repository: plexinc/pms-docker
   # tag: 1.20.1.3252-a78fef9a9
   pullPolicy: IfNotPresent
@@ -169,6 +169,7 @@ persistence:
     # the transcode directory. If claimName is specified, storageClass and size
     # are ignored.
     ## claimName: "plex-transcode-pvc"
+    claimName: "media-ssd-plex-transcode"
     # Optionally specify a storage class to be used for the transcode directory.
     # If not specified and claimName is not specified, the default storage
     # class will be used.
@@ -195,12 +196,12 @@ persistence:
     # the data directory. If claimName is specified, storageClass and size are
     # ignored.
     ## claimName: "plex-data-pvc"
-    claimName: "media-ssd-claim"
+    claimName: "media-ssd"
     # Optionally specify a storage class to be used for the data directory.
     # If not specified and claimName is not specified, the default storage
     # class will be used.
     storageClass: ""
-    # subPath: some-subpath
+    # subPath: "configs/plex"
     # The requested size of the volume to be used when creating a
     # PersistentVolumeClaim.
     size: 40Gi
@@ -215,20 +216,20 @@ persistence:
     #   name: 'foo'
 
   extraMounts: []
-  ## Include additional claims that can be mounted inside the
-  ## pod. This is useful if you wish to use different paths with categories
-  ## Claim will me mounted as /{mountPath} if specified. If no {mountPath} is given,
-  ## mountPath will default to {name}
-  # - name: video
-  #   claimName: video-claim
-  #   mountPath: /mnt/path/in/pod
+    ## Include additional claims that can be mounted inside the
+    ## pod. This is useful if you wish to use different paths with categories
+    ## Claim will me mounted as /{mountPath} if specified. If no {mountPath} is given,
+    ## mountPath will default to {name}
+    # - name: video
+    #   claimName: video-claim
+    #   mountPath: /mnt/path/in/pod
 
   config:
     # Optionally specify claimName to manually override the PVC to be used for
     # the config directory. If claimName is specified, storageClass and size
     # are ignored.
     ## claimName: "plex-config-pvc"
-    claimName: "media-config-ssd-claim"
+    claimName: "media-ssd-plex-config"
     # Optionally specify a storage class to be used for the config directory.
     # If not specified and claimName is not specified, the default storage
     # class will be used.

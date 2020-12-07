@@ -56,10 +56,12 @@ To upgrade K3s on each node you just need to run the install again. https://gith
 
 To get the latest version of K3s https://github.com/rancher/k3s/tags
 
+Latest k3sup commit run https://github.com/alexellis/k3sup/commit/80383dd
+
 ```bash
 # Install k3s on master node
 k3sup install --ip 192.168.0.100 \
-    --k3s-version v1.18.6+k3s1 \
+    --k3s-version v1.18.10+k3s1 \
     --user pi \
     --ssh-key ~/.ssh/pi-cluster \
     --k3s-extra-args '--no-deploy servicelb --no-deploy traefik'
@@ -67,13 +69,13 @@ k3sup install --ip 192.168.0.100 \
 # Update worker nodes into the cluster
 k3sup join --ip 192.168.0.101 \
     --server-ip 192.168.0.100 \
-    --k3s-version v1.18.6+k3s1 \
+    --k3s-version v1.18.10+k3s1 \
     --user pi \
     --ssh-key ~/.ssh/pi-cluster
 
 k3sup join --ip 192.168.0.102 \
     --server-ip 192.168.0.100 \
-    --k3s-version v1.18.6+k3s1 \
+    --k3s-version v1.18.10+k3s1 \
     --user pi \
     --ssh-key ~/.ssh/pi-cluster
 ```
