@@ -4,6 +4,7 @@
 [kube_worker]
 192.168.0.101 hostname=kube-worker-1 ansible_user=pi
 192.168.0.102 hostname=kube-worker-2 ansible_user=pi
+192.168.0.103 hostname=kube-worker-3 ansible_user=pi
 
 [kube_cluster:children]
 kube_master

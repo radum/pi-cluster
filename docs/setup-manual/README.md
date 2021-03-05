@@ -6,8 +6,6 @@ The follwing guide assumes everything will be done manually. Hopefully in the fu
 
 ## Requirements
 
-- TODO
-
 Add **K8S** (former billimek) and **bananaspliff** helm charts repos. We will use some helm charts from both.
 
 ```bash
@@ -22,15 +20,15 @@ helm repo update
 
 ## Setup Steps
 
-### [(1/7) Pi setup](1-pi-setup.md)
+### [(1/8) Pi setup](1-pi-setup.md)
 
-### [(2/7) Install and configure a Kubernetes cluster with k3s](2-install-k3s.md)
+### [(2/8) Install and configure a Kubernetes cluster with k3s](2-install-k3s.md)
 
-### [(3/7) Self-host your Media Center On Kubernetes with Plex, Sonarr, Radarr, Transmission and Jackett](3-media-center.md)
+### [(3/8) Self-host your Media Center On Kubernetes with Plex, Sonarr, Radarr, Transmission and Jackett](3-media-center.md)
 
-### [(4/7) Deploy Prometheus and Grafana to monitor a Kubernetes cluster](4-kubernetes-monitor.md)
+### [(4/8) Deploy Prometheus and Grafana to monitor a Kubernetes cluster](4-kubernetes-monitor.md)
 
-### (5/7) Heimdall Application Dashboard (TODO: CONFIG PVC BUG)
+### (5/8) Heimdall Application Dashboard (TODO: CONFIG PVC BUG)
 
 [Heimdall](https://heimdall.site/) is a application dashboard.
 
@@ -64,7 +62,7 @@ http://heimdall.192.168.0.240.nip.io/
 
 Access http://media.192.168.0.242.nip.io/ and configure (user will be admin).
 
-### (6/7) Calibre WEB **(TODO: WIP)**
+### (6/8) Calibre WEB **(TODO: WIP)**
 
 ```bash
 helm install calibre-web k8s-at-home/calibre-web \
@@ -76,7 +74,7 @@ http://calibre.192.168.0.240.nip.io/
 
 /books/calibre/metadata.db
 
-### (7/7) Lazylibrarian **(TODO: Transmission doesn't work OK)**
+### (7/8) Lazylibrarian **(TODO: Transmission doesn't work OK)**
 
 [LazyLibrarian](LazyLibrarian) LazyLibrarian is a program to follow authors and grab metadata for all your digital reading needs.
 
@@ -126,3 +124,11 @@ Downloaders:
 **5. Access Lazylibrarian Dashboard**
 
 http://lazylibrarian.192.168.0.240.nip.io/home
+
+### (8/8) Flood - monitoring service for various torrent clients **(TODO: WIP)**
+
+```bash
+helm install flood k8s-at-home/flood \
+    --values cluster/base/services/flood/services.flood.values.yml \
+    --namespace media
+```

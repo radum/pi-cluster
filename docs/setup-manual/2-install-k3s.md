@@ -199,8 +199,10 @@ helm version
 Configure the repository stable https://kubernetes-charts.storage.googleapis.com to access the [official charts](https://github.com/helm/charts/tree/master/stable).
 
 ```bash
-helm repo add stable https://kubernetes-charts.storage.googleapis.com
+helm repo add stable https://charts.helm.sh/stable
 # "stable" has been added to your repositories
+# or if it is already there
+# "stable" already exists with the same configuration, skipping
 
 helm repo update
 # Hang tight while we grab the latest from your chart repositories...
@@ -225,12 +227,27 @@ To install MetalLB from Helm, you simply need to run the following command helm 
 * `noglob`: This is to fix ZSH to treat [0] as glob. It fixes `zsh: no matches found: configInline.address-pools[0].name=default` error.
 
 * `metallb`: the name to give to the deployment
-* `stable/metallb`: the name of the [chart](https://github.com/helm/charts/tree/master/stable/metallb)
+* `bitnami/metallb`: the name of the [chart](https://github.com/bitnami/charts/tree/master/bitnami/metallb)
 * `--namespace kube-system`: the namespace in which we want to deploy MetalLB.
 * `--set configInline...`: to configures MetalLB in Layer 2 mode (see [documentation](https://metallb.universe.tf/configuration/) for more details). The IPs range `192.168.0.240 - 192.168.0.250` is used to constitute a pool of virtual IP addresses.
 
+> ! Bitname doesn't support ARM arch for the time being. Until they do we can't use this.
+
+```bash
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+noglob helm install metallb bitnami/metallb --namespace kube-system \
+  --set configInline.address-pools[0].name=default \
+  --set configInline.address-pools[0].protocol=layer2 \
+  --set configInline.address-pools[0].addresses[0]=192.168.0.240-192.168.0.250
+```
+
+Use the deprecated stable version until Bitnami support ARM.
+
 ```bash
 noglob helm install metallb stable/metallb --namespace kube-system \
+  --set controller.image.tag=v0.9 \
+  --set speaker.image.tag=v0.9 \
   --set configInline.address-pools[0].name=default \
   --set configInline.address-pools[0].protocol=layer2 \
   --set configInline.address-pools[0].addresses[0]=192.168.0.240-192.168.0.250
@@ -254,22 +271,29 @@ All done. No every time a new Kubenertes service of type LoadBalancer is deploye
 
 It can be used as [Kubernetes Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) to expose HTTP and HTTPS routes from outside the cluster to services within the cluster.
 
-Similarly to MetalLB, we will use the following [stable/nginx-ingress](https://github.com/helm/charts/tree/master/stable/nginx-ingress) Helm chart to install our proxy server.
+Similarly to MetalLB, we will use the following [stable/nginx-ingress](https://github.com/helm/charts/tree/master/stable/nginx-ingress) **[DEPRECATED]** Helm chart to install our proxy server.
+
+New Helm chart [ingress-nginx/ingress-nginx](https://github.com/kubernetes/ingress-nginx/tree/master/charts/ingress-nginx).
 
 The only config change done here are to specify an ARM compatible image and disable defaultBackend which isn't required.
 
 > You might want to update the image tag bellow
 
-* `controller.image.tag=0.32.0`: To get the latest version follow this [link](quay.io/kubernetes-ingress-controller/nginx-ingress-controller-arm).
+* `controller.image.tag=0.32.0`: To get the latest version follow this [link](https://quay.io/repository/kubernetes-ingress-controller/nginx-ingress-controller-arm?tag=latest&tab=tags).
 * `controller.image.runAsUser=33`: www-data user has id 33. You can check the id that is correct on the master PI by running `id -u www-data`.
 
 > FAIL: If this fail will loopback error
-We might need to run as user 101 instead of 33. That is the user `systemd-network`. We can find a user base don his id by running `getent passwd "101" | cut -d: -f1`.
+We might need to run as user 101 instead of 33. That is the user `systemd-network`. We can find a user based on his id by running `getent passwd "101" | cut -d: -f1`.
 
 ```bash
+# DEPRECATED
 helm install nginx-ingress stable/nginx-ingress --namespace kube-system \
   --set controller.image.repository=quay.io/kubernetes-ingress-controller/nginx-ingress-controller-arm \
   --set controller.image.tag=0.32.0 \
+  --set controller.image.runAsUser=101 \
+  --set defaultBackend.enabled=false
+
+helm install nginx-ingress ingress-nginx/ingress-nginx --namespace kube-system \
   --set controller.image.runAsUser=101 \
   --set defaultBackend.enabled=false
 ```
@@ -305,7 +329,10 @@ Install the CustomResourceDefinition resources.
 > You might want to update the release version bellow (https://github.com/jetstack/cert-manager/releases)
 
 ```bash
+# OLD
 kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.15.1/cert-manager.crds.yaml
+# NEW
+kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.2.0/cert-manager.crds.yaml
 ```
 
 2. Configure the jetstack Helm repository
@@ -319,7 +346,10 @@ helm repo add jetstack https://charts.jetstack.io && helm repo update
 3. Install cert-manager through Helm
 
 ```bash
+# OLD
 helm install cert-manager jetstack/cert-manager --namespace kube-system --version v0.15.1
+# NEW
+helm install cert-manager jetstack/cert-manager --namespace kube-system --version v1.2.0
 ```
 
 Check that all three cert-manager components are running.
@@ -344,7 +374,7 @@ Run the following commands (change <EMAIL> by your email).
 
 ```bash
 cat <<EOF | kubectl apply -f -
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-staging
@@ -363,7 +393,7 @@ EOF
 
 ```bash
 cat <<EOF | kubectl apply -f -
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-prod

@@ -1,5 +1,5 @@
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   namespace: "media"
@@ -9,28 +9,53 @@ spec:
   - host: "media.192.168.0.240.nip.io"
     http:
       paths:
-        - backend:
-            serviceName: "transmission-transmission-openvpn"
-            servicePort: 80
-          path: "/transmission"
-        - backend:
-            serviceName: "sonarr"
-            servicePort: 8989
-          path: "/sonarr"
-        - backend:
-            serviceName: "jackett"
-            servicePort: 9117
-          path: "/jackett"
-        - backend:
-            serviceName: "radarr"
-            servicePort: 7878
-          path: "/radarr"
-        - backend:
-            serviceName: "plex-tcp"
-            servicePort: 32400
-          path: "/"
-        - backend:
-            serviceName: "tautulli"
-            servicePort: 8181
-          path: "/tautulli"
+        - path: "/transmission"
+          pathType: Prefix
+          backend:
+            service:
+              name: "transmission-transmission-openvpn"
+              port:
+                number: 80
+        - path: "/sonarr"
+          pathType: Prefix
+          backend:
+            service:
+              name: "sonarr"
+              port:
+                number: 8989
+        - path: "/jackett"
+          pathType: Prefix
+          backend:
+            service:
+              name: "jackett"
+              port:
+                number: 9117
+        - path: "/radarr"
+          pathType: Prefix
+          backend:
+            service:
+              name: "radarr"
+              port:
+                number: 7878
+        - path: "/"
+          pathType: Prefix
+          backend:
+            service:
+              name: "plex-tcp"
+              port:
+                number: 32400
+        - path: "/tautulli"
+          pathType: Prefix
+          backend:
+            service:
+              name: "tautulli"
+              port:
+                number: 8181
+        - path: "/flood"
+          pathType: Prefix
+          backend:
+            service:
+              name: "flood"
+              port:
+                number: 3520
 ---

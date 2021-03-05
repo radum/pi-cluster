@@ -6,14 +6,14 @@
 
 image:
   repository: linuxserver/plex
-  tag: arm64v8-1.21.1.3795-ee64ab56f-ls8
+  tag: arm64v8-1.21.4.4079-1b7748a7b-ls30
   # repository: plexinc/pms-docker
-  # tag: 1.20.1.3252-a78fef9a9
+  # tag: 1.20.2.3402-0fec14d92
   pullPolicy: IfNotPresent
 
 #####   START  --> Official PLEX container environment variables
 # Override this with the plex claim token from plex.tv/claim
-claimToken: "claim-dcMa48SrsxAoLotMLBdP"
+claimToken: "claim-_sTDaLUzbQYh_SPMzn9x"
 # plex-raspberry-pi
 # Set the timezone of the plex server
 timezone: "Europe/London"
@@ -152,8 +152,8 @@ plexPreferences:
     name: 41-plex-preferences
     defaultMode: 493  # 0755 in octal permission notation
     # Using mountPath & SubPath allow you to volume mount a configMap AS A FILE
-    # Unfortunately this also means that updates to the configMap are not automtically
-    # propagated to the file contents. But it's better then replacing the entire
+    # Unfortunately this also means that updates to the configMap are not automatically
+    # propagated to the file contents. But it's better than replacing the entire
     # /etc/cont-init.d/ directory which is the "normal" behavior when doing volume
     # mounts.
     mountPath: /etc/cont-init.d/41-plex-preferences
@@ -213,6 +213,7 @@ persistence:
     # with the additional field 'name'
     # - claimName: "special-tv"
     #   name: 'foo'
+    #   subPath: optional/sub/path
 
   extraMounts: []
   ## Include additional claims that can be mounted inside the
@@ -220,8 +221,21 @@ persistence:
   ## Claim will me mounted as /{mountPath} if specified. If no {mountPath} is given,
   ## mountPath will default to {name}
   # - name: video
-  #   claimName: video-claim
+  #   # if claimName is specified the a new volume will mounted, if omitted the mount will be considered to be associated with one of the standard volumes (e.g data, config, transcode).
+  #   # This useful to mount data to a different subPath
+  #   claimName: optional-claim
   #   mountPath: /mnt/path/in/pod
+  #   subPath: optional/sub/path
+  #
+  ## Example using an existing NFS filer directly. Below the 'volume' key all volume types are allowed (eg. nfs, iscsi, hostPath).
+  ## See https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volume-v1-core for further information
+  # - name: example2
+  #   mountPath: mnt/example2
+  #   volume:
+  #     nfs:
+  #       server: <nfs server fqdn or ip>
+  #       path: <nfs export path>
+  #       readOnly: true
 
   config:
     # Optionally specify claimName to manually override the PVC to be used for
@@ -309,12 +323,24 @@ logging:
 # Probes configuration
 probes:
   liveness:
+    enabled: true
+    httpGet:
+      path: /identity
+      port: 32400
     failureThreshold: 5
     periodSeconds: 10
   readiness:
+    enabled: true
+    httpGet:
+      path: /identity
+      port: 32400
     failureThreshold: 5
     periodSeconds: 10
   startup:
+    enabled: true
+    httpGet:
+      path: /identity
+      port: 32400
     initialDelaySeconds: 5
     failureThreshold: 30
     periodSeconds: 10

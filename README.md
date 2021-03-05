@@ -48,6 +48,7 @@ This repo uses most of the work done by [onedr0p](https://github.com/onedr0p/) i
 |192.168.0.100|k3s master (kube-master)|
 |192.168.0.101|k3s worker (kube-worker-1)|
 |192.168.0.102|k3s worker (kube-worker-2)|
+|192.168.0.103|k3s worker (kube-worker-3)|
 
 Ideally we should build a VLAN for our IOT devices. Like this:
 
@@ -59,6 +60,7 @@ Ideally we should build a VLAN for our IOT devices. Like this:
 |192.168.10.23|k3s master (kube-master)|
 |192.168.10.24|k3s worker (kube-worker-1)|
 |192.168.10.25|k3s worker (kube-worker-2)|
+|192.168.10.26|k3s worker (kube-worker-3)|
 
 * * *
 
@@ -78,4 +80,8 @@ Ideally we should build a VLAN for our IOT devices. Like this:
 
 [k3sup](https://k3sup.dev) is a neat tool provided by [@alexellis](https://github.com/alexellis) that helps get your k3s cluster up and running quick.
 
-> For manual deployment see [k3sup.md](docs/setup-ansible/k3sup.md), and for an automated script see [bootstrap-cluster.sh](setup/bootstrap-cluster.sh)
+> For manual deployment see [k3sup.md](docs/setup-ansible/k3sup.md), and for an automated script see [bootstrap-cluster.sh](setup/bootstrap-cluster.sh) [NOT READY WIP]
+
+### 4. Install cluter apps / tools
+
+> see [1-pi-setup](docs/setup-manual/1-pi-setup.md) (skip pi setup steps and k3s setup steps as we have done them above)

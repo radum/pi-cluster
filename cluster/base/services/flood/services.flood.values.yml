@@ -6,44 +6,34 @@
 #
 
 image:
-  repository: linuxserver/jackett
+  repository: jesec/flood
   pullPolicy: IfNotPresent
-  tag: arm64v8-version-v0.17.617
+  tag: 4.4.1
 
 strategy:
   type: Recreate
 
 env:
   TZ: "Europe/London"
-  # PUID: 1001
-  # PGID: 1001
+
+# Other environment variables that can be configure can be seen at
+# https://github.com/jesec/flood/blob/master/config.cli.js
+env:
+  FLOOD_OPTION_RUNDIR: /data
 
 service:
   type: ClusterIP
   port:
-    port: 9117
-    # port: 80 It doesn't work with this port for some reason
+    port: 3000
 
 ingress:
   enabled: false
 
 persistence:
-  config:
-    enabled: true
-    emptyDir: false
-    ## If you want to reuse an existing claim, you can pass the name of the PVC using
-    ## the existingClaim variable
-    existingClaim: "media-config-ssd-claim"
-    subPath: "configs/jackett"
-    accessMode: ReadWriteOnce
-    size: 1Gi
-    ## Do not delete the pvc upon helm uninstall
-    skipuninstall: false
-
-  torrentblackhole:
+  data:
     enabled: false
     emptyDir: false
-    mountPath: /downloads
+    mountPath: /data
     ## Persistent Volume Storage Class
     ## If defined, storageClassName: <storageClass>
     ## If set to "-", storageClassName: "", which disables dynamic provisioning

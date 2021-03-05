@@ -1,82 +1,50 @@
-# Default values for calibre-web.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
 image:
   repository: linuxserver/calibre-web
-  tag: arm64v8-0.6.9-ls87
+  tag: arm64v8-0.6.9-ls94
   pullPolicy: IfNotPresent
 
-# upgrade strategy type (e.g. Recreate or RollingUpdate)
 strategyType: Recreate
-
-# Probes configuration
-probes:
-  liveness:
-    initialDelaySeconds: 60
-    failureThreshold: 5
-    timeoutSeconds: 10
-  readiness:
-    initialDelaySeconds: 60
-    failureThreshold: 5
-    timeoutSeconds: 10
-
-nameOverride: ""
-fullnameOverride: ""
-
-# Linuxserver.io additional layers.
-# Enables additional features for the image, at the cost of increased size and
-# possible incompatabilities with certain architectures. Disabled by default.
-dockerMods:
-  # Enable ebook conversion. Compatible with x86_64 image only.
-  # To enable, set enabled to true, and follow the guide at: https://github.com/linuxserver/docker-calibre-web#application-setup
-  # to configure the application.
-  ebookConversion:
-    enabled: true
-    image:
-      repository: linuxserver/calibre-web
-      # To use a different tag for the DockerMod, specify the tag below
-      tag: calibre
-
-timezone: "Europe/London"
-puid: 1001
-pgid: 1001
-umask: 22
 
 service:
   type: ClusterIP
-  port: 80
-  # port: 8083
-  ## Specify the nodePort value for the LoadBalancer and NodePort service types.
-  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
-  ##
-  # nodePort:
-  ## Provide any additional annotations which may be required. This can be used to
-  ## set the LoadBalancer service type to internal only.
-  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
-  ##
-  annotations: {}
-  labels: {}
-  ## Use loadBalancerIP to request a specific static IP,
-  ## otherwise leave blank
-  ##
-  loadBalancerIP:
-  # loadBalancerSourceRanges: []
-  ## Set the externalTrafficPolicy in the Service to either Cluster or Local
-  # externalTrafficPolicy: Cluster
+  port:
+    port: 80
+    # port: 8083
 
 ingress:
   enabled: true
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  path: /
   hosts:
-    - calibre.192.168.0.240.nip.io
+    - host: calibre.192.168.0.240.nip.io
+      paths:
+        - path: /
+          # Ignored if not kubeVersion >= 1.14-0
+          pathType: Prefix
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+
+env:
+  TZ: "Europe/London"
+  PUID: 1001
+  PGID: 1001
+  UMASK: 22
+  # Linuxserver.io additional layers.
+  # Enables additional features for the image, at the cost of increased size and
+  # possible incompatabilities with certain architectures. Disabled by default.
+  DOCKER_MODS:
+    # Enable ebook conversion. Compatible with x86_64 image only.
+    # To enable, set enabled to true, and follow the guide at: https://github.com/linuxserver/docker-calibre-web#application-setup
+    # to configure the application.
+    ebookConversion:
+      enabled: true
+      image:
+        repository: linuxserver/calibre-web
+        # To use a different tag for the DockerMod, specify the tag below
+        tag: calibre
 
 persistence:
   config:
@@ -107,32 +75,3 @@ persistence:
     size: 10Gi
     ## Do not delete the pvc upon helm uninstall
     skipuninstall: false
-  extraExistingClaimMounts: []
-    # - name: external-mount
-    #   mountPath: /srv/external-mount
-    ## A manually managed Persistent Volume and Claim
-    ## If defined, PVC must be created manually before volume will be bound
-    #   existingClaim:
-    #   readOnly: true
-
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #  cpu: 100m
-  #  memory: 128Mi
-  # requests:
-  #  cpu: 100m
-  #  memory: 128Mi
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
-
-podAnnotations: {}
-
-deploymentAnnotations: {}

@@ -154,10 +154,13 @@ static domain_name_servers=1.1.1.1
 
 We need to enable container features in the kernel in order to run containers.
 
-Edit the file `/boot/cmdline.txt`:
+[Raspbian] Edit the file `/boot/cmdline.txt`:
+[UbuntuPI] Edit the file `/boot/firmware/cmdline.txt`:
 
 ```bash
 sudo nano /boot/cmdline.txt
+# or
+sudo nano /boot/firmware/cmdline.txt
 ```
 
 and add the following properties at the end of the line:

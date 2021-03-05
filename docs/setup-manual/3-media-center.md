@@ -71,6 +71,13 @@ You can verify the PVC exists with the following command:
 kubectl get pvc -n media
 ```
 
+**3. Deploy and Create the Persistent Volume (PV)(PVC) for configs**
+
+```bash
+kubectl apply -f cluster/base/common/media-config.persistentvolume.yml
+kubectl apply -f cluster/base/common/media-config.persistentvolumeclaim.yml
+```
+
 #### Ingress
 
 After the persistent volume, we are now going to deploy the ingress responsible of making accessible a service from outside the cluster by mapping an internal `service:port` to a host. To choose a host, we need to configure a DNS like we did for NextCloud "nextcloud.<domain.com>" in the previous article. However, unlike NextCloud, the Media Center components have no reason to be exposed on the Internet, we can pick a host that will be resolved internally to our Nginx proxy (available at `192.168.0.240` : LoadBalancer IP). The simplest solution is to use [nip.io](https://nip.io/) which allows us to map an IP (in our case `192.168.0.240`) to a hostname without touching `/etc/hosts` or configuring a DNS. Basically it resolves `<anything>.<ip>.nip.io` by `<ip>` without requiring anything else, Magic !
@@ -107,17 +114,20 @@ The image [haugene/transmission-openvpn](https://haugene.github.io/docker-transm
 ```
 .
 ├── media
+├───── calibre
 ├───── configs
+├──────── heimdall
 ├──────── jackett
 ├──────── plex
 ├──────── radarr
 ├──────── sonarr
+├──────── tautulli
 ├──────── transmission-data
 ├───── downloads
 ├──────── jackett
-├──────── movies
 ├──────── transmission
-└──────── tv
+├───── movies
+└───── tv
 ```
 
 **1. Create a Kubernetes secret to store your VPN password**

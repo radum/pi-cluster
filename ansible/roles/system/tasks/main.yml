@@ -7,6 +7,9 @@
 - name: Upgrade system
   apt:
     upgrade: dist
+    # Need the force_apt_get until
+    # https://github.com/ansible/ansible/issues/56832
+    force_apt_get: true
   register: apt_upgrade
   retries: 5
   until: apt_upgrade is success
@@ -15,6 +18,9 @@
   apt:
     name: "*"
     state: latest
+    # Need the force_apt_get until
+    # https://github.com/ansible/ansible/issues/56832
+    force_apt_get: true
   register: apt_update
   retries: 5
   until: apt_update is success
@@ -46,6 +52,9 @@
       - wget
     install_recommends: false
     update_cache: true
+    # Need the force_apt_get until
+    # https://github.com/ansible/ansible/issues/56832
+    force_apt_get: true
   register: apt_install_common
   retries: 5
   until: apt_install_common is success
@@ -53,6 +62,9 @@
 - name: Clean up apt
   apt:
     autoremove: true
+    # Need the force_apt_get until
+    # https://github.com/ansible/ansible/issues/56832
+    force_apt_get: true
 
 - name: Copy unattended-upgrades configuration files in place
   copy:
@@ -126,15 +138,15 @@
     path: "{{ item }}"
     state: touch
   with_items:
-    - /boot/firmware/nobtcmd.txt
+    - /boot/firmware/cmdline.txt
     - /boot/firmware/syscfg.txt
 
 - name: Enable required cgroup features and disable IPv6
   lineinfile:
-    path: /boot/firmware/nobtcmd.txt
+    path: /boot/firmware/cmdline.txt
     backrefs: true
     regexp: '^(.*fixrtc)$'
-    line: '\1 ipv6.disable=1 cgroup_memory=1 cgroup_enable=memory'
+    line: '\1 ipv6.disable=1 cgroup_memory=1 cgroup_enable=memory apparmor=0 mitigations=off max_loop=32'
     state: present
   when: deploy_target != 'vagrant'
 
@@ -186,11 +198,11 @@
 #       gpu_mem=16
 #   when: deploy_target != 'vagrant'
 
-# - name: Overclock CPU
-#   blockinfile:
-#     path: /boot/firmware/syscfg.txt
-#     marker: "# {mark} ANSIBLE OVERCLOCK CPU"
-#     block: |
-#       over_voltage=2
-#       arm_freq=1750
-#   when: deploy_target != 'vagrant'
+- name: Overclock CPU
+  blockinfile:
+    path: /boot/firmware/syscfg.txt
+    marker: "# {mark} ANSIBLE OVERCLOCK CPU"
+    block: |
+      over_voltage=2
+      arm_freq=1750
+  when: deploy_target != 'vagrant'

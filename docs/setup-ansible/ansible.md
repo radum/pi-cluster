@@ -100,3 +100,9 @@ env ANSIBLE_CONFIG=ansible/ansible.cfg ansible -b \
 env ANSIBLE_CONFIG=ansible/ansible.cfg ansible -b \
       all -i ansible/inventory -m shell -a "/usr/local/bin/k3s-agent-uninstall.sh"
 ```
+
+## Run the playboks only for certain machines
+
+```bash
+env ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook -i ansible/inventory --limit 192.168.0.102 ansible/playbook.yml
+```
