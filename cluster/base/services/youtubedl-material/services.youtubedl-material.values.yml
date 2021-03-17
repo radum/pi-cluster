@@ -1,0 +1,70 @@
+image:
+  repository: tzahi12345/youtubedl-material
+  pullPolicy: IfNotPresent
+  tag: nightly
+
+strategy:
+  type: Recreate
+
+env:
+  TZ: "Europe/London"
+  # UID:
+  # GID:
+
+service:
+  type: ClusterIP
+  port:
+    port: 17442
+
+ingress:
+  enabled: false
+
+# addons:
+#   codeserver:
+#     enabled: true
+#     image:
+#       repository: codercom/code-server
+#       pullPolicy: IfNotPresent
+#       tag: 3.9.1
+#     args:
+#       - --auth
+#       - "none"
+#       - --user-data-dir
+#       - "/config/.vscode"
+#       - --extensions-dir
+#       - "/config/.vscode"
+#     volumeMounts:
+#       - name: video
+#         mountPath: "/video"
+#     workingDir: "/video"
+#     ingress:
+#       enabled: true
+#       nameSuffix: codeserver
+#       labels: {}
+#       hosts:
+#         - host: codeserver.192.168.0.240.nip.io
+#           paths:
+#             - path: /
+#               pathType: Prefix
+
+persistence:
+  config:
+    enabled: false
+    emptyDir: false
+    mountPath: /app/appdata
+  audio:
+    enabled: false
+    emptyDir: false
+    mountPath: /app/audio
+  subscriptions:
+    enabled: false
+    emptyDir: false
+    mountPath: /subscriptions
+  users:
+    enabled: false
+    emptyDir: false
+    mountPath: /users
+  video:
+    enabled: false
+    emptyDir: false
+    mountPath: /video

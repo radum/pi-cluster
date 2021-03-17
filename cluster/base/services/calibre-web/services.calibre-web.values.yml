@@ -1,9 +1,29 @@
 image:
   repository: linuxserver/calibre-web
-  tag: arm64v8-0.6.9-ls94
+  tag: arm64v8-0.6.11-ls109
   pullPolicy: IfNotPresent
 
-strategyType: Recreate
+strategy:
+  type: Recreate
+
+env:
+  TZ: "Europe/London"
+  PUID: 1001
+  PGID: 1001
+  UMASK: 22
+  # Linuxserver.io additional layers.
+  # Enables additional features for the image, at the cost of increased size and
+  # possible incompatabilities with certain architectures. Disabled by default.
+  DOCKER_MODS:
+    # Enable ebook conversion. Compatible with x86_64 image only.
+    # To enable, set enabled to true, and follow the guide at: https://github.com/linuxserver/docker-calibre-web#application-setup
+    # to configure the application.
+    ebookConversion:
+      enabled: true
+      image:
+        repository: linuxserver/calibre-web
+        # To use a different tag for the DockerMod, specify the tag below
+        tag: calibre
 
 service:
   type: ClusterIP
@@ -27,49 +47,16 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-env:
-  TZ: "Europe/London"
-  PUID: 1001
-  PGID: 1001
-  UMASK: 22
-  # Linuxserver.io additional layers.
-  # Enables additional features for the image, at the cost of increased size and
-  # possible incompatabilities with certain architectures. Disabled by default.
-  DOCKER_MODS:
-    # Enable ebook conversion. Compatible with x86_64 image only.
-    # To enable, set enabled to true, and follow the guide at: https://github.com/linuxserver/docker-calibre-web#application-setup
-    # to configure the application.
-    ebookConversion:
-      enabled: true
-      image:
-        repository: linuxserver/calibre-web
-        # To use a different tag for the DockerMod, specify the tag below
-        tag: calibre
-
 persistence:
   config:
-    enabled: true
-    ## calibre-web configuration data Persistent Volume Storage Class
-    ## If defined, storageClassName: <storageClass>
-    ## If set to "-", storageClassName: "", which disables dynamic provisioning
-    ## If undefined (the default) or set to null, no storageClassName spec is
-    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-    ##   GKE, AWS & OpenStack)
-    ##
-    # storageClass: "-"
-    ##
-    ## If you want to reuse an existing claim, you can pass the name of the PVC using
-    ## the existingClaim variable
-    # existingClaim: your-claim
-    accessMode: ReadWriteOnce
-    size: 1Gi
-    ## Do not delete the pvc upon helm uninstall
-    skipuninstall: false
+    enabled: false
+    emptyDir: false
+
   books:
     enabled: true
+    emptyDir: false
+    mountPath: /books
     # storageClass: "-"
-    # existingClaim: your-claim
-    # subPath: some-subpath
     existingClaim: "media-ssd-claim"
     accessMode: ReadWriteOnce
     size: 10Gi

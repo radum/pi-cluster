@@ -1,7 +1,7 @@
 image:
-  repository: linuxserver/radarr
+  repository: linuxserver/lidarr
   pullPolicy: IfNotPresent
-  tag: arm64v8-3.0.2.4552-ls96
+  tag: arm64v8-version-0.7.2.1878
 
 strategy:
   type: Recreate
@@ -12,7 +12,7 @@ env:
 service:
   type: ClusterIP
   port:
-    port: 7878
+    port: 8686
 
 ingress:
   enabled: false
@@ -30,7 +30,7 @@ probes:
         - /usr/bin/env
         - bash
         - -c
-        - curl --fail localhost:7878/api/v3/system/status?apiKey=`IFS=\> && while
+        - curl --fail localhost:8686/api/v1/system/status?apiKey=`IFS=\> && while
           read -d \< E C; do if [[ $E = "ApiKey" ]]; then echo $C; fi; done < /config/config.xml`
       failureThreshold: 5
       initialDelaySeconds: 60
@@ -45,7 +45,7 @@ persistence:
     ## If you want to reuse an existing claim, you can pass the name of the PVC using
     ## the existingClaim variable
     existingClaim: "media-config-ssd-claim"
-    subPath: "configs/radarr"
+    subPath: "configs/lidarr"
     accessMode: ReadWriteOnce
     size: 1Gi
     ## Do not delete the pvc upon helm uninstall
@@ -54,11 +54,20 @@ persistence:
   media:
     enabled: true
     emptyDir: false
-    ## If you want to reuse an existing claim, you can pass the name of the PVC using
-    ## the existingClaim variable
+    mountPath: /media
     existingClaim: "media-ssd-claim"
-    # subPath: "movies"
     accessMode: ReadWriteOnce
     size: 10Gi
-    ## Do not delete the pvc upon helm uninstall
     skipuninstall: false
+    ## Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    # storageClass: "-"
+    # accessMode: ReadWriteOnce
+    # size: 1Gi
+    ## Do not delete the pvc upon helm uninstall
+    # skipuninstall: false
+    # existingClaim: ""

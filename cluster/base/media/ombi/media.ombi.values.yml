@@ -1,0 +1,25 @@
+image:
+  repository: linuxserver/ombi
+  pullPolicy: IfNotPresent
+  tag: arm64v8-v4.0.767-ls22
+
+strategy:
+  type: Recreate
+
+env:
+  TZ: "Europe/London"
+  # PUID: 1001
+  # PGID: 1001
+
+service:
+  type: ClusterIP
+  port:
+    port: 3579
+
+ingress:
+  enabled: false
+
+persistence:
+  config:
+    enabled: false
+    emptyDir: false

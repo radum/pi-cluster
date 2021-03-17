@@ -58,6 +58,8 @@ Various links and resources around the web on how to build a Pi Cluster.
 
 - https://github.com/bjw-s/k8s-gitops
 
+- https://github.com/k8s-at-home/awesome-home-kubernetes
+
 #### PI Bootstrap examples
 
 - Ansible playbook to provision a cluster of Raspberry Pi's with k3s https://github.com/olafkfreund/ansible-k3s-rpi

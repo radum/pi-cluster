@@ -16,13 +16,6 @@ spec:
               name: "transmission-transmission-openvpn"
               port:
                 number: 80
-        - path: "/sonarr"
-          pathType: Prefix
-          backend:
-            service:
-              name: "sonarr"
-              port:
-                number: 8989
         - path: "/jackett"
           pathType: Prefix
           backend:
@@ -30,6 +23,13 @@ spec:
               name: "jackett"
               port:
                 number: 9117
+        - path: "/sonarr"
+          pathType: Prefix
+          backend:
+            service:
+              name: "sonarr"
+              port:
+                number: 8989
         - path: "/radarr"
           pathType: Prefix
           backend:
@@ -37,13 +37,20 @@ spec:
               name: "radarr"
               port:
                 number: 7878
-        - path: "/"
+        - path: "/lidarr"
           pathType: Prefix
           backend:
             service:
-              name: "plex-tcp"
+              name: "radarr"
               port:
-                number: 32400
+                number: 8686
+        - path: "/ombi"
+          pathType: Prefix
+          backend:
+            service:
+              name: "ombi"
+              port:
+                number: 3579
         - path: "/tautulli"
           pathType: Prefix
           backend:
@@ -57,5 +64,19 @@ spec:
             service:
               name: "flood"
               port:
-                number: 3520
+                number: 3000
+        - path: "/youtubedl"
+          pathType: Prefix
+          backend:
+            service:
+              name: "youtubedl-youtubedl-material"
+              port:
+                number: 17442
+        - path: "/"
+          pathType: Prefix
+          backend:
+            service:
+              name: "plex-tcp"
+              port:
+                number: 32400
 ---
