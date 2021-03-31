@@ -34,6 +34,8 @@ env:
     value: "47444"
   - name: TRANSMISSION_DOWNLOAD_DIR
     value: "/downloads/transmission"
+  - name: TRANSMISSION_WEB_UI
+    value: "flood-for-transmission"
   - name: PUID
     value: "1000"
   - name: PGID

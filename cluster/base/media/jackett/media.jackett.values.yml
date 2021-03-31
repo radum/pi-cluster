@@ -8,7 +8,7 @@
 image:
   repository: linuxserver/jackett
   pullPolicy: IfNotPresent
-  tag: arm64v8-version-v0.17.617
+  tag: arm64v8-version-v0.17.826
 
 strategy:
   type: Recreate

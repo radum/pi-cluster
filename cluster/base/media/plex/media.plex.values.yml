@@ -6,7 +6,7 @@
 
 image:
   repository: linuxserver/plex
-  tag: arm64v8-1.22.0.4163-d8c4875dd-ls32
+  tag: arm64v8-version-1.22.1.4228-724c56e62
   # repository: plexinc/pms-docker
   # tag: 1.20.2.3402-0fec14d92
   pullPolicy: IfNotPresent
