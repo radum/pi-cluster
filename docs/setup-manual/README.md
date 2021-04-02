@@ -20,15 +20,15 @@ helm repo update
 
 ## Setup Steps
 
-### [(1/9) Pi setup](1-pi-setup.md)
+### [(1/10) Pi setup](1-pi-setup.md)
 
-### [(2/9) Install and configure a Kubernetes cluster with k3s](2-install-k3s.md)
+### [(2/10) Install and configure a Kubernetes cluster with k3s](2-install-k3s.md)
 
-### [(3/9) Self-host your Media Center On Kubernetes with Plex, Sonarr, Radarr, Transmission and Jackett](3-media-center.md)
+### [(3/10) Self-host your Media Center On Kubernetes with Plex, Sonarr, Radarr, Transmission and Jackett](3-media-center.md)
 
-### [(4/9) Deploy Prometheus and Grafana to monitor a Kubernetes cluster](4-kubernetes-monitor.md)
+### [(4/10) Deploy Prometheus and Grafana to monitor a Kubernetes cluster](4-kubernetes-monitor.md)
 
-### (5/9) Heimdall Application Dashboard (TODO: CONFIG PVC BUG)
+### (5/10) Heimdall Application Dashboard (TODO: CONFIG PVC BUG)
 
 [Heimdall](https://heimdall.site/) is a application dashboard.
 
@@ -62,7 +62,7 @@ http://heimdall.192.168.0.240.nip.io/
 
 Access http://media.192.168.0.242.nip.io/ and configure (user will be admin).
 
-### (6/9) Calibre WEB **(TODO: WIP)**
+### (6/10) Calibre WEB **(TODO: WIP)**
 
 ```bash
 helm install calibre-web k8s-at-home/calibre-web \
@@ -79,7 +79,7 @@ http://calibre.192.168.0.240.nip.io/
 
 /books/calibre/metadata.db
 
-### (7/9) Lazylibrarian **(TODO: Transmission doesn't work OK)**
+### (7/10) Lazylibrarian **(TODO: Transmission doesn't work OK)**
 
 [LazyLibrarian](LazyLibrarian) LazyLibrarian is a program to follow authors and grab metadata for all your digital reading needs.
 
@@ -130,7 +130,7 @@ Downloaders:
 
 http://lazylibrarian.192.168.0.240.nip.io/home
 
-### (8/9) Flood - monitoring service for various torrent clients **(TODO: WIP)**
+### (8/10) Flood - monitoring service for various torrent clients **(TODO: WIP)**
 
 ```bash
 helm install flood k8s-at-home/flood \
@@ -138,7 +138,7 @@ helm install flood k8s-at-home/flood \
     --namespace media
 ```
 
-### (8/9) YoutubeDL-Material - a Material Design frontend for youtube-dl **(TODO: WIP)**
+### (8/10) YoutubeDL-Material - a Material Design frontend for youtube-dl **(TODO: WIP)**
 
 ```bash
 helm install youtubedl k8s-at-home/youtubedl-material \
@@ -146,7 +146,7 @@ helm install youtubedl k8s-at-home/youtubedl-material \
     --namespace media
 ```
 
-### (8/9) OMBI - self-hosted web application that automatically gives your shared Plex or Emby users the ability to request content by themselves **(TODO: WIP)**
+### (8/10) OMBI - self-hosted web application that automatically gives your shared Plex or Emby users the ability to request content by themselves **(TODO: WIP)**
 
 ```bash
 helm install ombi k8s-at-home/ombi \
@@ -154,7 +154,7 @@ helm install ombi k8s-at-home/ombi \
     --namespace media
 ```
 
-### (9/9) Lidarr - Sonarr for music
+### (9/10) Lidarr - Sonarr for music
 
 ```
 # config.xml
@@ -166,5 +166,15 @@ helm install ombi k8s-at-home/ombi \
 ```bash
 helm install lidarr k8s-at-home/lidarr \
     --values cluster/base/media/lidarr/media.lidarr.values.yml \
+    --namespace media
+```
+
+### (10/10) Home Assistant **(TODO: WIP)**
+
+This although works, doesn't have support for addons.
+
+```bash
+helm install homeassistant k8s-at-home/home-assistant \
+    --values cluster/base/services/home-assistant/services.home-assistant.values.yml \
     --namespace media
 ```
