@@ -2,6 +2,8 @@
 
 > TODO: This is still a WIP document and just shows my initial setup.
 
+HA Url: http://192.168.0.103:8123/
+
 Steps:
 
 **Step 1**

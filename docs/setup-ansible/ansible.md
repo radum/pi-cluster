@@ -48,7 +48,15 @@ env ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook \
     ansible/playbook-usbdrive.yml
 ```
 
-## Check Temp of all RPis
+## Useful commands
+
+### Run the playboks only for certain machines
+
+```bash
+env ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook -i ansible/inventory --limit 192.168.0.103 ansible/playbook.yml
+```
+
+### Check Temp of all RPis
 
 > **Note**: This should be below 70.0'C for good performance
 
@@ -62,7 +70,7 @@ env ANSIBLE_CONFIG=ansible/ansible.cfg ansible \
     all -i ansible/inventory -m shell -a "cat /sys/class/thermal/thermal_zone*/temp | sed 's/\(.\)..$/.\1°C/'"
 ```
 
-## Check overclock value of all RPis
+### Check overclock value of all RPis
 
 > **Note**: This should be 175000
 
@@ -71,21 +79,21 @@ env ANSIBLE_CONFIG=ansible/ansible.cfg ansible \
     all -i ansible/inventory -m shell -a "cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq"
 ```
 
-## Reboot the RPis
+### Reboot the RPis
 
 ```bash
 env ANSIBLE_CONFIG=ansible/ansible.cfg ansible -b \
     all -i ansible/inventory -m shell -a "/sbin/shutdown -r now"
 ```
 
-## Shutdown the RPis
+### Shutdown the RPis
 
 ```bash
 env ANSIBLE_CONFIG=ansible/ansible.cfg ansible -b \
     all -i ansible/inventory -m shell -a "/sbin/shutdown -h now"
 ```
 
-## Uninstall k3s
+### Uninstall k3s
 
 ```bash
 # master and workers
@@ -99,10 +107,4 @@ env ANSIBLE_CONFIG=ansible/ansible.cfg ansible -b \
 # workers
 env ANSIBLE_CONFIG=ansible/ansible.cfg ansible -b \
       all -i ansible/inventory -m shell -a "/usr/local/bin/k3s-agent-uninstall.sh"
-```
-
-## Run the playboks only for certain machines
-
-```bash
-env ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook -i ansible/inventory --limit 192.168.0.102 ansible/playbook.yml
 ```
