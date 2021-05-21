@@ -1,7 +1,7 @@
 image:
   repository: linuxserver/radarr
   pullPolicy: IfNotPresent
-  tag: arm64v8-3.0.2.4552-ls96
+  tag: arm64v8-3.1.1.4954-ls104
 
 strategy:
   type: Recreate

@@ -4,7 +4,7 @@ image:
   # Version Tags
   # Stable releases from Sonarr (currently v2)
   # Preview releases from Sonarr (currently v3)
-  tag: arm64v8-3.0.6.1196-ls100
+  tag: arm64v8-3.0.6.1196-ls105
 
 strategy:
   type: Recreate
