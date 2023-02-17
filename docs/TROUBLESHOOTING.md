@@ -10,7 +10,7 @@ journalctl -u kubelet
 
 More logs:
 
-```
+```bash
 kubectl logs [POD NAME] -p
 ```
 

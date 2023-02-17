@@ -8,3 +8,5 @@ Stuff I would like to improve for this stack:
 * [ ] - Explore https://www.ui.com/
 * [ ] - https://blog.linuxserver.io/2019/06/28/getting-started-with-diskover-in-docker/
 * [ ] - https://github.com/Nekmo/amazon-dash
+* [ ] - Dashy https://github.com/Lissy93/dashy
+* [ ] - https://github.com/tubearchivist/tubearchivist

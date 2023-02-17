@@ -24,7 +24,8 @@ Instead we will install manually `metalb` as load balancer and `nginx` as proxy.
 
 ```bash
 export K3S_KUBECONFIG_MODE="644"
-export INSTALL_K3S_EXEC=" --no-deploy servicelb --no-deploy traefik"
+export INSTALL_K3S_EXEC=" --disable servicelb"
+# export INSTALL_K3S_EXEC=" --disable servicelb --disable traefik"
 ```
 
 3. Run the installer
@@ -175,7 +176,7 @@ $ kubectl get nodes -o wide
 NAME           STATUS   ROLES    AGE   VERSION         INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION     CONTAINER-RUNTIME
 kube-worker-1   Ready    <none>   18m   v1.17.0+k3s.1   192.168.0.23   <none>        Debian GNU/Linux 10 (buster)     5.4.6-rockchip64   containerd://1.3.0-k3s.5
 kube-worker-2   Ready    <none>   17m   v1.17.0+k3s.1   192.168.0.24   <none>        Raspbian GNU/Linux 10 (buster)   4.19.75-v7+        containerd://1.3.0-k3s.5
-kube-master    Ready    master   44h   v1.17.0+k3s.1   192.168.0.22   <none>   
+kube-master    Ready    master   44h   v1.17.0+k3s.1   192.168.0.22   <none>
 ```
 
 #### Install Helm (version >= 3.x.y) - Kubernetes Package Manager
@@ -246,8 +247,8 @@ Use the deprecated stable version until Bitnami support ARM.
 
 ```bash
 noglob helm install metallb stable/metallb --namespace kube-system \
-  --set controller.image.tag=v0.9 \
-  --set speaker.image.tag=v0.9 \
+  --set controller.image.tag=v0.13 \
+  --set speaker.image.tag=v0.13 \
   --set configInline.address-pools[0].name=default \
   --set configInline.address-pools[0].protocol=layer2 \
   --set configInline.address-pools[0].addresses[0]=192.168.0.240-192.168.0.250
@@ -290,7 +291,7 @@ We might need to run as user 101 instead of 33. That is the user `systemd-networ
 helm install nginx-ingress stable/nginx-ingress --namespace kube-system \
   --set controller.image.repository=quay.io/kubernetes-ingress-controller/nginx-ingress-controller-arm \
   --set controller.image.tag=0.32.0 \
-  --set controller.image.runAsUser=101 \
+  --set controller.image.runAsUser=33 \
   --set defaultBackend.enabled=false
 
 helm install nginx-ingress ingress-nginx/ingress-nginx --namespace kube-system \
@@ -302,7 +303,6 @@ After a few seconds, you should observe the Nginx component deployed under `kube
 
 ```
 $ kubectl get pods -n kube-system -l app=nginx-ingress -o wide
-
 NAME                                             READY   STATUS    RESTARTS   AGE     IP          NODE           NOMINATED NODE   READINESS GATES
 nginx-ingress-controller-996c5bf9-k4j64   1/1     Running   0          76s   10.42.1.13   kube-worker-1   <none>           <none>
 ```
@@ -310,7 +310,10 @@ nginx-ingress-controller-996c5bf9-k4j64   1/1     Running   0          76s   10.
 Interestingly, Nginx service is deployed in LoadBalancer mode, you can observe MetalLB allocates a virtual IP (column `EXTERNAL-IP`) to Nginx with the command here:
 
 ```
-$ kubectl get services  -n kube-system -l app=nginx-ingress -o wide
+# DEPRECATED
+$ kubectl get services -n kube-system -l app=nginx-ingress -o wide
+
+$ kubectl get services -n kube-system -o wide -w nginx-ingress-ingress-nginx-controller
 
 NAME                            TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)                      AGE   SELECTOR
 nginx-ingress-controller   LoadBalancer   10.43.253.188   192.168.0.240   80:30423/TCP,443:32242/TCP   92s   app=nginx-ingress,component=controller,release=nginx-ingress
@@ -332,7 +335,7 @@ Install the CustomResourceDefinition resources.
 # OLD
 kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.15.1/cert-manager.crds.yaml
 # NEW
-kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.2.0/cert-manager.crds.yaml
+kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.10.0/cert-manager.crds.yaml
 ```
 
 2. Configure the jetstack Helm repository
@@ -349,13 +352,13 @@ helm repo add jetstack https://charts.jetstack.io && helm repo update
 # OLD
 helm install cert-manager jetstack/cert-manager --namespace kube-system --version v0.15.1
 # NEW
-helm install cert-manager jetstack/cert-manager --namespace kube-system --version v1.2.0
+helm install cert-manager jetstack/cert-manager --namespace kube-system --version v1.10.0
 ```
 
 Check that all three cert-manager components are running.
 
 ```
-kubectl get pods -n kube-system -l app.kubernetes.io/instance=cert-manager -o wide 
+kubectl get pods -n kube-system -l app.kubernetes.io/instance=cert-manager -o wide
 
 NAME                                       READY   STATUS    RESTARTS   AGE   IP           NODE           NOMINATED NODE   READINESS GATES
 cert-manager-cainjector-6659d6844d-w9vrn   1/1     Running   0          69s   10.42.1.13   kube-worker-1   <none>           <none>
@@ -387,7 +390,7 @@ spec:
     solvers:
     - http01:
         ingress:
-          class: nginx
+          class: traefik-cert-manager
 EOF
 ```
 
@@ -406,7 +409,7 @@ spec:
     solvers:
     - http01:
         ingress:
-          class: nginx
+          class: traefik-cert-manager
 EOF
 ```
 

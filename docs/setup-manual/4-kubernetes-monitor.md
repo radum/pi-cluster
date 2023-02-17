@@ -67,6 +67,8 @@ Enable additional resources (armExporter will bring temperature monitoring also 
 
 **3. Installation**
 
+There is an issue witht he current repo this fixes it https://github.com/carlosedp/cluster-monitoring/issues/91#issuecomment-861993629 (but remember to change the IP under Network Ingresses).
+
 ```bash
 cd cluster-monitoring/
 

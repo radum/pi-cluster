@@ -150,6 +150,18 @@
     state: present
   when: deploy_target != 'vagrant'
 
+- name: Create NFS mount folder if it does not exist
+  file:
+    path: /mnt/ssd
+    state: directory
+    mode: '0777'
+
+- name: Configure auto-mount of the NFS Share
+  lineinfile:
+    path: /etc/fstab
+    line: '192.168.0.8:/volume1/PiCluster   /mnt/ssd   nfs    rw  0  0'
+    create: yes
+
 - name: Disable WiFi
   blockinfile:
     path: /boot/firmware/syscfg.txt

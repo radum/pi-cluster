@@ -39,6 +39,8 @@ Launch Etcher, select first the image extracted of Raspbian, select the Media (S
 
 ![etcher 2](../../assets/etcher-screen-2.webp)
 
+Or use https://github.com/ventoy/Ventoy
+
 5. Once flashed, navigate to the folder /boot of the SD card and create an empty file ssh
 
 Adding the file named `ssh` onto the boot partition enables SSH by default.

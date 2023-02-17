@@ -53,7 +53,7 @@ env ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook \
 ### Run the playboks only for certain machines
 
 ```bash
-env ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook -i ansible/inventory --limit 192.168.0.103 ansible/playbook.yml
+env ANSIBLE_CONFIG=ansible/ansible.cfg ansible-playbook -i ansible/inventory --limit 192.168.0.102 ansible/playbook.yml
 ```
 
 ### Check Temp of all RPis
