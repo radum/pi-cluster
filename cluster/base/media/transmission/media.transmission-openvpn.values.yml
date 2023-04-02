@@ -13,11 +13,17 @@ env:
   # TODO: Find a better way to upgrade.
   # Because there are no versioned tags we could use this to force the upgrade.
   - name: VERSION_BUMP
-    value: "2"
+    value: "8"
   - name: OPENVPN_PROVIDER
-    value: "EXPRESSVPN"
-  - name: OPENVPN_CONFIG
-    value: "my_expressvpn_romania_udp"
+    value: "NORDVPN"
+  - name: NORDVPN_COUNTRY
+    value: "RO"
+  - name: NORDVPN_PROTOCOL
+    value: "tcp"
+  - name: NORDVPN_CATEGORY
+    value: "legacy_p2p"
+  # - name: OPENVPN_CONFIG
+  #   value: "my_expressvpn_romania_udp"
   - name: OPENVPN_USERNAME
     valueFrom: # Reference to the secret | openvpn.username
       secretKeyRef:
@@ -49,9 +55,9 @@ volumes:
   - name: "media-ssd-claim"
     persistentVolumeClaim:
       claimName: "media-ssd-claim" # PersistentVolumeClaim created earlier
-  - name: dev-tun # Needed for VPN
-    hostPath:
-      path: "/dev/net/tun"
+  # - name: dev-tun # Needed for VPN
+  #   hostPath:
+  #     path: "/dev/net/tun"
 
 volumeMounts:
     - name: "media-ssd-claim"
@@ -60,8 +66,8 @@ volumeMounts:
     - name: "media-ssd-claim"
       mountPath: "/media/downloads/transmission"
       subPath: "downloads/transmission" # Path /mnt/ssd/media/downloads/transmission where transmission downloads Torrents
-    - name: dev-tun
-      mountPath: "/dev/net/tun" # Needed for VPN
+    # - name: dev-tun
+    #   mountPath: "/dev/net/tun" # Needed for VPN
 
 # Security context for container
 securityContext:

@@ -96,6 +96,7 @@ sudo apt install --reinstall linux-modules-$(uname -r)
 # then iptables -V will be fine but on reboot they might fail again.
 # now you can mount the NFS share folder and continue setting the K3S
 sudo mount /mnt/ssd/
+# If you get an error "mount.nfs: Protocol not supported" might be because the drive is already mounted.
 ```
 
 ## TEMP

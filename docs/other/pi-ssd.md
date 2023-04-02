@@ -4,6 +4,7 @@
 
 - [Raspberry Pi Cheap SSD Upgrade Guide 📰](https://jamesachambers.com/raspberry-pi-cheap-ssd-upgrade-30/)
 - [Raspberry Pi 4 USB Boot is official! How-to 📺](https://www.youtube.com/watch?v=8tTFgrOCsig)
+- [How to install Ubuntu Desktop on Raspberry Pi 4](https://discourse.ubuntu.com/t/how-to-install-ubuntu-desktop-on-raspberry-pi-4/18925)
 
 > All 8GB Raspberry Pi 4s and newer 4GB models are pre-configured to boot from a USB drive automatically as long as there is no SD card inserted.
 

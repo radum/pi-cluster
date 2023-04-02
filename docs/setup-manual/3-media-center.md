@@ -158,7 +158,7 @@ Create the file `media.transmission-openvpn.values.yml` containing the following
 
 **3. Install the chart bananaspliff/transmission-openvpn**
 
-Execute the following command to install the chart `bananaspliff/transmission-openvp`n with the above configuration onto the namespace `media`.
+Execute the following command to install the chart `bananaspliff/transmission-openvpn` with the above configuration onto the namespace `media`.
 
 ```bash
 helm install transmission bananaspliff/transmission-openvpn \
@@ -365,7 +365,7 @@ Configure the connection to Transmission into **Settings / Download Client / Add
 * Using the hostname and port: `transmission-transmission-openvpn.media:80` ``
 * Directory: `/media/downloads/transmission`
 
-> Note: The folder /media, is the default volume mount for this Helm chart. The same volume mount should be used for Transmission also. Here is why: 
+> Note: The folder /media, is the default volume mount for this Helm chart. The same volume mount should be used for Transmission also. Here is why:
 
 ```
 Chart versions 3.2.0 and earlier used separate PVCs for Downloads and TV. This presented an issue where Sonarr would be unable to hard-link files between the /downloads and /tv directories when importing media. This is caused because each PVC is exposed to the pod as a separate filesystem. This resulted in Sonarr copying files rather than linking; using additional storage without the user's knowledge.
