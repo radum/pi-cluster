@@ -8,24 +8,34 @@
 image:
   repository: linuxserver/jackett
   pullPolicy: IfNotPresent
-  tag: arm64v8-version-v0.18.74
+  tag: arm64v8-version-v0.20.1796
 
 strategy:
   type: Recreate
 
 env:
   TZ: "Europe/London"
-  # PUID: 1001
-  # PGID: 1001
 
+# service:
+#   type: ClusterIP
+#   port:
+#     port: 9117
+#     # port: 80 It doesn't work with this port for some reason
+
+# ingress:
+#   enabled: false
+
+# -- Configures service settings for the chart.
+# @default -- See values.yaml
 service:
-  type: ClusterIP
-  port:
-    port: 9117
-    # port: 80 It doesn't work with this port for some reason
+  main:
+    ports:
+      http:
+        port: 9117
 
 ingress:
-  enabled: false
+  main:
+    enabled: false
 
 persistence:
   config:

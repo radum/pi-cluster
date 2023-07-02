@@ -1,10 +1,17 @@
+#
+# IMPORTANT NOTE
+#
+# This chart inherits from our common library chart. You can check the default values/options here:
+# https://github.com/k8s-at-home/charts/tree/master/charts/common/values.yaml
+#
+
 image:
   repository: linuxserver/sonarr
   pullPolicy: IfNotPresent
   # Version Tags
   # Stable releases from Sonarr (currently v2)
   # Preview releases from Sonarr (currently v3)
-  tag: arm64v8-3.0.6.1196-ls105
+  tag: arm64v8-3.0.9.1549-ls154
 
 strategy:
   type: Recreate
@@ -12,14 +19,23 @@ strategy:
 env:
   TZ: "Europe/London"
 
+# service:
+#   type: ClusterIP
+#   port:
+#     port: 8989
+#     # port: 80
+
+# -- Configures service settings for the chart.
+# @default -- See values.yaml
 service:
-  type: ClusterIP
-  port:
-    port: 8989
-    # port: 80 It doesn't work with this port for some reason
+  main:
+    ports:
+      http:
+        port: 8989
 
 ingress:
-  enabled: false
+  main:
+    enabled: false
 
 probes:
   liveness:
