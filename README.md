@@ -29,6 +29,7 @@ This repo uses most of the work done by [onedr0p](https://github.com/onedr0p/) i
 ```bash
 .
 ├── ./ansible        # Ansible playbook to run after the RPis have been flashed
+├── ./docker         # Docker compose setup for most services used in the cluster
 ├── ./cluster        # Cluster templates, Heml files and so on
 ├── ./setup          # Setup of the cluster machines
 ├── ./docs           # Documentation

@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  # Jackett
+  jackett:
+    image: linuxserver/jackett
+    container_name: jackett
+    ports:
+      - 9117:9117
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - ./jackett-config:/config
+      - ./media-storage/Downloads/completed:/downloads
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jackett.rule=Host(`jackett.home`)"
+
+  # Sonarr
+  sonarr:
+    container_name: sonarr
+    image: linuxserver/sonarr:develop
+    restart: always
+    ports:
+      - 8989:8989
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - ./sonarr-config:/config
+      - ./media-storage/Downloads/completed:/downloads/completed
+      - ./media-storage/Episodes:/episodes
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - jackett
+      - transmission
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr.home`)"
+
+  # Transmission
+  transmission:
+    container_name: transmission
+    image: haugene/transmission-openvpn
+    cap_add:
+        - NET_ADMIN
+    volumes:
+        - ./transmission-config/config:/config
+        - ./media-storage/Downloads:/data
+        - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - .vpn
+    environment:
+        - OPENVPN_PROVIDER=NORDVPN
+        - NORDVPN_COUNTRY=RO
+        - NORDVPN_PROTOCOL=tcp
+        - NORDVPN_CATEGORY=legacy_p2p
+        - TRANSMISSION_WEB_UI=flood-for-transmission
+    logging:
+        driver: json-file
+        options:
+            max-size: 10m
+    ports:
+        - '9091:9091'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.transmission.rule=Host(`transmission.home`)"
+
+  # Traefik reverse proxy e.g. jellyfin.home -> localhost:8096
+  traefik:
+    image: traefik:v2.10
+    restart: always
+    container_name: traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "9090:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro

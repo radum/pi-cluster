@@ -35,6 +35,7 @@ Various links and resources around the web on how to build a Pi Cluster.
 - <https://medium.com/@alexellisuk/five-years-of-raspberry-pi-clusters-77e56e547875>
 - <https://mtlynch.io/digitizing-home-videos-walkthrough/>
 - <https://blog.dsb.dev/posts/accessing-my-k3s-cluster-from-anywhere-with-tailscale/index.html>
+- <https://notes.jupiterbroadcasting.com/self-hosted/2021/episode-054/>
 
 ### Cluster Resources
 
