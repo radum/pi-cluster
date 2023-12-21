@@ -1,0 +1,6 @@
+---
+
+ansible_user: pi
+
+log2ram_version: 1.6.1
+log2ram_size: 128M

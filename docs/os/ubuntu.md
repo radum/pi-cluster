@@ -1,4 +1,4 @@
-# Ubuntu
+# How to use Ubuntu
 
 ## Downloads the Flash tool or use `Raspberry Pi Imager`.
 
@@ -97,16 +97,4 @@ sudo apt install --reinstall linux-modules-$(uname -r)
 # now you can mount the NFS share folder and continue setting the K3S
 sudo mount /mnt/ssd/
 # If you get an error "mount.nfs: Protocol not supported" might be because the drive is already mounted.
-```
-
-## TEMP
-
-```bash
-update-alternatives --set iptables /usr/sbin/iptables-legacy
-update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
-update-alternatives --set arptables /usr/sbin/arptables-legacy
-update-alternatives --set ebtables /usr/sbin/ebtables-legacy
-sudo modprobe ip_tables
-sudo echo 'ip_tables' >> /etc/modules
-sudo reboot
 ```

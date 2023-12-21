@@ -10,7 +10,7 @@ Make sure in your hosts file you have `127.0.0.1	home.media`.
 
 ```shell
 # Make sure you are in this folder
-docker compose -f docker-compose.yml up
+docker compose -f docker-compose.yml --project-name media up
 ```
 
 Then open:
@@ -23,3 +23,4 @@ Then open:
 # TODO
 
 - [ ] Set Traefik to handle the docker containers routing (this will fix using local 192. ips inside the apps of each container)
+- [ ] Transmissions is crashing very often for some reason

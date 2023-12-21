@@ -12,9 +12,43 @@ If you don't have one of those follow the steps bellow.
 
 ## Step 1 - Prepare the bootloader
 
+- https://www.youtube.com/watch?v=a8nzkLryGmM
+
+Flash using Raspberry Pi Imager Raspberry x64 OS. Use that to update the firmware and enable USB boot loader first.
+
+Once inserted and in the Pi shell run
+
+```shell
+sudo rpi-update
+# Restart
+sudo shutdown -r now
+
+# Plugin the SSD in the USB
+
+# Check that you can access it
+# See where is the USB
+sudo fdisk -l
+sudo mkdir /mnt/exdisk
+sudo mount /dev/sda1 /mnt/exdisk
+ls /mnt/exdisk
+sudo umount /mnt/mydisk
+# Check all is ok
+sudo rpi-eeprom-update -d -a
+# Set the bootloader to be USB
+# Config the boot loader to be latest
+sudo raspi-config
+# Shutdown remove the card and insert the USB.
+```
+
+## Step 2 - Install Ubuntu on the SSD
+
 Download Ubuntu Pi x64 from here https://ubuntu.com/download/raspberry-pi and flash it using Raspberry Pi Imager.
 
 Check the settings before flashing to make sure the ssh keys and the name is correct.
+
+Use the Raspberry Pi Imager.
+
+## Old steps
 
 ```bash
 cd ~

@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   # Jackett
@@ -32,7 +32,7 @@ services:
       - TZ=Europe/London
     volumes:
       - ./sonarr-config:/config
-      - ./media-storage/Downloads/completed:/downloads/completed
+      - ./media-storage/Downloads/completed:/data/completed
       - ./media-storage/Episodes:/episodes
       - /etc/localtime:/etc/localtime:ro
     depends_on:
@@ -46,26 +46,29 @@ services:
   transmission:
     container_name: transmission
     image: haugene/transmission-openvpn
+    restart: unless-stopped
     cap_add:
-        - NET_ADMIN
+      - NET_ADMIN
     volumes:
-        - ./transmission-config/config:/config
-        - ./media-storage/Downloads:/data
-        - /etc/localtime:/etc/localtime:ro
+      - ./transmission-config/config:/config
+      - ./media-storage/Downloads:/data
+      - /etc/localtime:/etc/localtime:ro
     env_file:
       - .vpn
     environment:
-        - OPENVPN_PROVIDER=NORDVPN
-        - NORDVPN_COUNTRY=RO
-        - NORDVPN_PROTOCOL=tcp
-        - NORDVPN_CATEGORY=legacy_p2p
-        - TRANSMISSION_WEB_UI=flood-for-transmission
+      - OPENVPN_PROVIDER=NORDVPN
+      - NORDVPN_COUNTRY=RO
+      - NORDVPN_PROTOCOL=tcp
+      - NORDVPN_CATEGORY=legacy_p2p
+      - TRANSMISSION_WEB_UI=flood-for-transmission
+      - LOCAL_NETWORK=192.168.0.0/16
     logging:
-        driver: json-file
-        options:
-            max-size: 10m
+      driver: json-file
+      options:
+        max-size: 10m
     ports:
-        - '9091:9091'
+      - "9091:9091"
+      # - '9117:9117'
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.transmission.rule=Host(`transmission.home`)"
