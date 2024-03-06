@@ -19,6 +19,7 @@ Then open:
 - http://home.media:9117/UI/Dashboard - Jacket
 - http://home.media:8989/ Sonarr
 - http://home.media:9091/ Transmission
+- http://home.media:6767/ Bazarr
 
 # TODO
 

@@ -4,6 +4,7 @@ Various links and resources around the web on how to build a Pi Cluster.
 
 - [Resources](#resources)
 	- [Implementation Resources](#implementation-resources)
+		- [What's on my Home Server examples](#whats-on-my-home-server-examples)
 		- [Tutorials](#tutorials)
 		- [Articles](#articles)
 		- [Cluster Resources](#cluster-resources)
@@ -23,8 +24,13 @@ Various links and resources around the web on how to build a Pi Cluster.
 
 ## Implementation Resources
 
+### What's on my Home Server examples
+
+- What's on my Home Server?? MUST HAVE Services 2023! <https://www.youtube.com/watch?v=5YgWaeq07As>
+
 ### Tutorials
 
+- Quick and Easy Local SSL Certificates for Your Homelab! <https://www.youtube.com/watch?v=qlcVx-k-02E>
 - Build your very own self-hosting platform with Raspberry Pi and Kubernetes <https://kauri.io/build-your-very-own-self-hosting-platform-with-raspberry-pi-and-kubernetes-introduction/1229f21044ef4bff8df35875d6803776/a>
 - Step by Step slow guide — Kubernetes Cluster on Raspberry Pi 4B <https://levelup.gitconnected.com/step-by-step-slow-guide-kubernetes-cluster-on-raspberry-pi-4b-part-1-6e4179c89cbc>
 - Raspberry Pi Cluster <https://www.jeffgeerling.com/blog/2020/raspberry-pi-cluster-episode-1-introduction-clusters>
@@ -57,6 +63,7 @@ Various links and resources around the web on how to build a Pi Cluster.
 
 #### Docker Implementations
 
+- Sonarr / Radarr / Jackett / NZBGet / Deluge / OpenVPN / Plex <https://github.com/sebgl/htpc-download-box>
 - A collection of quick starters for ansible, kubernetes, docker, linux, windows, and more. Great for HomeLabs! <https://github.com/techno-tim/launchpad/tree/master/docker>
 - My Docker Compose for my Udoo Bolt Home Media Server <https://github.com/jarrad-roam/bolt-media>
 - Personal version of smarthomebeginner docker home media server <https://github.com/thoroc/home-server>
@@ -66,7 +73,7 @@ Various links and resources around the web on how to build a Pi Cluster.
 - My Home Media Server in docker compose <https://github.com/Noctris/mediaserver-docker>
 - Raspberry Pi Media Server using Hypriot OS <https://github.com/austinmcconnell/raspberry-media-server>
 - This is a collection of docker-compose files used to build a media server <https://github.com/Maskime/media-server>
-- Selfhosted tech starter pack for development of new project or startup - <https://github.com/tldr-devops/startpack>
+- Selfhosted tech starter pack for development of new project or startup <https://github.com/tldr-devops/startpack>
 
 #### Other Implementations
 

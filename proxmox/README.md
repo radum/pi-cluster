@@ -19,9 +19,13 @@
 ## Setup
 
 - [Passing Storage to a Container Getting Started with Proxmox 8](https://youtu.be/qa2Q7tZVol8)
--
 
 ## Setup examples
 
-- Proxmox VE Helper-Scripts - https://github.com/tteck/Proxmox/tree/main
+- Proxmox VE Helper-Scripts - https://github.com/tteck/Proxmox/tree/main https://tteck.github.io/Proxmox/
 - Ansible-based solution for rapidly deploying a Docker containerized cloud media server. - https://github.com/Cloudbox/Cloudbox
+
+## Links
+
+- https://192.168.0.248:8006/
+- https://192.168.0.240:9443/

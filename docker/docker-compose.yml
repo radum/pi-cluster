@@ -14,7 +14,7 @@ services:
       - ./jackett-config:/config
       - ./media-storage/Downloads/completed:/downloads
       - /etc/localtime:/etc/localtime:ro
-    restart: always
+    restart: unless-stopped
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.jackett.rule=Host(`jackett.home`)"
@@ -22,8 +22,8 @@ services:
   # Sonarr
   sonarr:
     container_name: sonarr
-    image: linuxserver/sonarr:develop
-    restart: always
+    image: linuxserver/sonarr:latest
+    restart: unless-stopped
     ports:
       - 8989:8989
     environment:
@@ -41,6 +41,27 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.sonarr.rule=Host(`sonarr.home`)"
+
+  bazarr:
+    container_name: bazarr
+    image: linuxserver/bazarr:latest
+    restart: unless-stopped
+    ports:
+      - 6767:6767
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - UMASK_SET=022 #optional
+    volumes:
+      - ./bazarr-config:/config
+      - ./media-storage/Episodes:/episodes
+    depends_on:
+      - jackett
+      - transmission
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bazarr.rule=Host(`bazarr.home`)"
 
   # Transmission
   transmission:
@@ -76,7 +97,7 @@ services:
   # Traefik reverse proxy e.g. jellyfin.home -> localhost:8096
   traefik:
     image: traefik:v2.10
-    restart: always
+    restart: unless-stopped
     container_name: traefik
     command:
       - "--api.insecure=true"
