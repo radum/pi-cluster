@@ -71,16 +71,15 @@ services:
     cap_add:
       - NET_ADMIN
     volumes:
+      - ./protonvpn/:/etc/openvpn/custom/
       - ./transmission-config/config:/config
       - ./media-storage/Downloads:/data
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - .vpn
     environment:
-      - OPENVPN_PROVIDER=NORDVPN
-      - NORDVPN_COUNTRY=RO
-      - NORDVPN_PROTOCOL=tcp
-      - NORDVPN_CATEGORY=legacy_p2p
+      - OPENVPN_PROVIDER=custom
+      - OPENVPN_CONFIG=ro-16.protonvpn.udp
       - TRANSMISSION_WEB_UI=flood-for-transmission
       - LOCAL_NETWORK=192.168.0.0/16
     logging:

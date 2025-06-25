@@ -27,6 +27,7 @@ Various links and resources around the web on how to build a Pi Cluster.
 ### What's on my Home Server examples
 
 - What's on my Home Server?? MUST HAVE Services 2023! <https://www.youtube.com/watch?v=5YgWaeq07As>
+- Self hosted update spring 2024 https://dbushell.com/2024/03/25/self-hosted-update-spring-2024/
 
 ### Tutorials
 
